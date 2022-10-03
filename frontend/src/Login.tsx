@@ -1,64 +1,81 @@
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
-import React, { useState } from 'react';
+import { Button, Form, Input } from 'antd';
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-const { Header, Sider, Content } = Layout;
+const Center = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+`;
 
 const Login: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem('access'))
+      navigate('/job');
+  }, []);
+
+  const onFinish = async (values: any) => {
+    const formData = new FormData();
+    formData.append('username', values.username);
+    formData.append('password', values.password);
+    const response = await (await fetch(
+      'http://localhost:8000/auth/jwt/create/', {
+        method: 'POST',
+        body: formData,
+      },
+    )).json();
+    console.log(response);
+    if (!response.access)
+      toast('Username or password is wrong');
+    else {
+      localStorage.setItem('access', response.access);
+      localStorage.setItem('refresh', response.refresh);
+      navigate('/job');
+    }
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+  };
 
   return (
-    <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
-            },
-          ]}
-        />
-      </Sider>
-      <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }}>
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: 'trigger',
-            onClick: () => setCollapsed(!collapsed),
-          })}
-        </Header>
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-          }}
+    <Center>
+      <Form
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: 'Please input your username!' }]}
         >
-          Content
-        </Content>
-      </Layout>
-    </Layout>
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: 'Please input your password!' }]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Log in
+          </Button>
+        </Form.Item>
+      </Form>
+    </Center>
   );
 };
 
