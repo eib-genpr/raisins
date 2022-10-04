@@ -10,31 +10,21 @@ background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
 display: flex;
 `;
 
-const Handle = styled.div`
-width: 20px;
-height: 20px;
-background-color: orange;
-border-radius: 4px;
-margin-right: 8px;
-`;
-
-function Task(props) {
+function Candidate(props) {
   return (
-    <Draggable draggableId={props.task.id} index={props.index}>
+    <Draggable draggableId={props.candidate.id} index={props.index}>
       {(provided, snapshot) => (
         <Container
           {...provided.draggableProps}
+          {...provided.dragHandleProps}
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          <Handle
-            {...provided.dragHandleProps}
-          />
-          {props.task.content}
+          {props.candidate.content}
         </Container>
       )}
     </Draggable>
   );
 }
 
-export default Task;
+export default Candidate;

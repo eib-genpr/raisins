@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import Task from './Task';
+import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
+import Candidate from './Candidate';
 
 const Container = styled.div`
 margin: 8px;
@@ -16,7 +16,7 @@ const Title = styled.h3`
 padding: 8px;
 `;
 
-const TaskList = styled.div<{ isDraggingOver: boolean }>`
+const CandidateList = styled.div<{ isDraggingOver: boolean }>`
 padding: 8px;
 transition: background-color 0.2s ease;
 background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
@@ -24,19 +24,19 @@ flex-grow: 1;
 min-height: 100px;
 `;
 
-class InnerList extends React.Component<{ tasks: any }> {
-  shouldComponentUpdate(nextProps) {
-    if (nextProps === this.props.tasks) return false;
+class InnerList extends React.Component<{ candidates: any }> {
+  shouldComponentUpdate(nextProps: any) {
+    if (nextProps === this.props.candidates) return false;
     return true;
   }
   render() {
-    return this.props.tasks.map((t, i) => (
-      <Task key={t.id} task={t} index={i} />
+    return this.props.candidates.map((t: any, i: number) => (
+      <Candidate key={t.id} candidate={t} index={i} />
     ));
   }
 }
 
-function Column(props) {
+function Step(props: any) {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -54,17 +54,21 @@ function Column(props) {
 
   return (
     <Container>
-      <Title>{props.column.title}</Title>
-      <Droppable droppableId={props.column.id}>
+      <Title>{props.step.title}</Title>
+      <Droppable droppableId={props.step.id}>
         {(provided, snapshot) => (
-          <TaskList ref={provided.innerRef} {...provided.droppableProps} isDraggingOver={snapshot.isDraggingOver}>
-            <InnerList tasks={props.tasks} />
+          <CandidateList
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            isDraggingOver={snapshot.isDraggingOver}
+          >
+            <InnerList candidates={props.candidates} />
             {provided.placeholder}
-          </TaskList>
+          </CandidateList>
         )}
       </Droppable>
     </Container>
   );
 }
 
-export default Column;
+export default Step;

@@ -1,13 +1,13 @@
+import React, { useState } from 'react';
+import { Layout, Menu } from 'antd';
+import styled from 'styled-components';
 import {
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
-import React, { useState } from 'react';
-import { DragDropContext, Droppable, DroppableProvided, Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-import styled from 'styled-components';
-import Column from './Column';
+import { DragDropContext } from 'react-beautiful-dnd';
+import Step from './Step';
 
 const { Header, Sider, Content } = Layout;
 
@@ -16,39 +16,24 @@ display: flex;
 `;
 
 const JobBoard: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(true);
-
   const testData = {
-    tasks: {
-      'task-1': { id: 'task-1', content: 'blah4' },
-      'task-2': { id: 'task-2', content: 'blah3' },
-      'task-3': { id: 'task-3', content: 'blah1' },
-      'task-4': { id: 'task-4', content: 'blah2' },
+    candidates: {
+      'candidate-1': { id: 'candidate-1', content: 'blah4' },
+      'candidate-2': { id: 'candidate-2', content: 'blah3' },
+      'candidate-3': { id: 'candidate-3', content: 'blah1' },
+      'candidate-4': { id: 'candidate-4', content: 'blah2' },
     },
-    columns: {
-      'column-1': { id: 'column-1', title: 'ColBlah', taskIds: ['task-1', 'task-2', 'task-3', 'task-4'] },
-      'column-2': { id: 'column-2', title: 'Col2', taskIds: []},
-      'column-3': { id: 'column-3', title: 'Col3', taskIds: []},
+    steps: {
+      'step-1': { id: 'step-1', title: 'ColBlah', candidateIds: ['candidate-1', 'candidate-2', 'candidate-3', 'candidate-4'] },
+      'step-2': { id: 'step-2', title: 'Col2', candidateIds: []},
+      'step-3': { id: 'step-3', title: 'Col3', candidateIds: []},
     },
-    columnOrder: ['column-1', 'column-2', 'column-3'],
+    stepOrder: ['step-1', 'step-2', 'step-3'],
   };
 
   const [state, setState] = useState(testData);
 
-  const onDragStart = () => {
-    document.body.style.color = 'orange';
-    document.body.style.transition = 'background-color 0.2s ease';
-  };
-
-  const onDragUpdate = (update: any) => {
-    const { destination } = update;
-    const opacity = destination ? destination.index / Object.keys(state.tasks).length : 0;
-    document.body.style.backgroundColor = `rgba(153, 141, 217, ${opacity}`;
-  };
-
   const onDragEnd = (result: any) => {
-    document.body.style.color = 'inherit';
-    document.body.style.backgroundColor = 'inherit';
     const { destination, source, draggableId } = result;
     if (!destination)
       return;
@@ -56,46 +41,46 @@ const JobBoard: React.FC = () => {
         destination.index === source.index)
       return;
 
-    const start = state.columns[source.droppableId];
-    const finish = state.columns[destination.droppableId];
+    const start = state.steps[source.droppableId];
+    const finish = state.steps[destination.droppableId];
 
     if (start === finish) {
-      const newTaskIds = Array.from(start.taskIds);
-      newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, draggableId);
-      const newCol = {
+      const newCandidateIds = Array.from(start.candidateIds);
+      newCandidateIds.splice(source.index, 1);
+      newCandidateIds.splice(destination.index, 0, draggableId);
+      const newStep = {
         ...start,
-        taskIds: newTaskIds,
+        candidateIds: newCandidateIds,
       };
       const newState = {
         ...state,
-        columns: {
-          ...state.columns,
-          [newCol.id]: newCol,
+        steps: {
+          ...state.steps,
+          [newStep.id]: newStep,
         },
       };
       setState(newState);
       return;
     }
 
-    const startTaskIds = Array.from(start.taskIds);
-    startTaskIds.splice(source.index, 1);
+    const startCandidateIds = Array.from(start.candidateIds);
+    startCandidateIds.splice(source.index, 1);
     const newStart = {
       ...start,
-      taskIds: startTaskIds,
+      candidateIds: startCandidateIds,
     };
 
-    const finishTaskIds = Array.from(finish.taskIds);
-    finishTaskIds.splice(destination.index, 0, draggableId);
+    const finishCandidateIds = Array.from(finish.candidateIds);
+    finishCandidateIds.splice(destination.index, 0, draggableId);
     const newFinish = {
       ...finish,
-      taskIds: finishTaskIds,
+      candidateIds: finishCandidateIds,
     };
 
     const newState = {
       ...state,
-      columns: {
-        ...state.columns,
+      steps: {
+        ...state.steps,
         [newStart.id]: newStart,
         [newFinish.id]: newFinish,
       },
@@ -105,7 +90,7 @@ const JobBoard: React.FC = () => {
 
   return (
     <Layout style={{height: '100vh'}}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider trigger={null} collapsed={true}>
         <div className="logo" />
         <Menu
           theme="dark"
@@ -142,11 +127,11 @@ const JobBoard: React.FC = () => {
           }}
         >
           <Container>
-            <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart} onDragUpdate={onDragUpdate}>
-              {state.columnOrder.map(cid => {
-                const col = state.columns[cid];
-                const elems = col.taskIds.map(tid => state.tasks[tid]);
-                return <Column key={cid} column={col} tasks={elems} />
+            <DragDropContext onDragEnd={onDragEnd}>
+              {state.stepOrder.map(cid => {
+                const step = state.steps[cid];
+                const elems = step.candidateIds.map((tid: any) => state.candidates[tid]);
+                return <Step key={cid} step={step} candidates={elems} />
               })}
             </DragDropContext>
           </Container>
