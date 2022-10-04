@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Button } from 'antd';
 import styled from 'styled-components';
 import {
-  UploadOutlined,
+  PlusOutlined,
+  ShoppingOutlined,
   UserOutlined,
-  VideoCameraOutlined,
 } from '@ant-design/icons';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Step from './Step';
@@ -27,8 +27,11 @@ const JobBoard: React.FC = () => {
       'step-1': { id: 'step-1', title: 'ColBlah', candidateIds: ['candidate-1', 'candidate-2', 'candidate-3', 'candidate-4'] },
       'step-2': { id: 'step-2', title: 'Col2', candidateIds: []},
       'step-3': { id: 'step-3', title: 'Col3', candidateIds: []},
+      'step-4': { id: 'step-4', title: 'Col3', candidateIds: []},
+      'step-5': { id: 'step-5', title: 'Col3', candidateIds: []},
+      'step-6': { id: 'step-6', title: 'Col3', candidateIds: []},
     },
-    stepOrder: ['step-1', 'step-2', 'step-3'],
+    stepOrder: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6'],
   };
 
   const [state, setState] = useState(testData);
@@ -91,7 +94,8 @@ const JobBoard: React.FC = () => {
   return (
     <Layout style={{height: '100vh'}}>
       <Sider trigger={null} collapsed={true}>
-        <div className="logo" />
+        <div className="logo">
+        </div>
         <Menu
           theme="dark"
           mode="inline"
@@ -99,24 +103,22 @@ const JobBoard: React.FC = () => {
           items={[
             {
               key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
+              icon: <ShoppingOutlined />,
+              label: 'Jobs',
             },
             {
               key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
+              icon: <UserOutlined />,
+              label: 'Candidates',
             },
           ]}
         />
       </Sider>
-      <Layout className="site-layout">
+      <Layout className="site-layout" style={{ display: 'inline-table' }}>
         <Header className="site-layout-background" style={{ padding: 0 }}>
+          <Button type="primary" icon={<PlusOutlined />} style={{ marginLeft: '10px' }}>
+            New
+          </Button>
         </Header>
         <Content
           className="site-layout-background"
@@ -124,6 +126,7 @@ const JobBoard: React.FC = () => {
             margin: '24px 16px',
             padding: 24,
             minHeight: 280,
+            minWidth: '100%',
           }}
         >
           <Container>
