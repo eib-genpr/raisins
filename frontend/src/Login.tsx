@@ -24,12 +24,11 @@ const Login: React.FC = () => {
     formData.append('username', values.username);
     formData.append('password', values.password);
     const response = await (await fetch(
-      'http://localhost:8000/auth/jwt/create/', {
+      process.env.REACT_APP_API_URL + '/auth/jwt/create/', {
         method: 'POST',
         body: formData,
       },
     )).json();
-    console.log(response);
     if (!response.access)
       toast('Username or password is wrong');
     else {
