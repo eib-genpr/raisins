@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { useQuery, gql } from '@apollo/client';
 import Step from './Step';
 
 const Container = styled.div`
@@ -10,6 +11,14 @@ display: flex;
 
 const JobBoard: React.FC = (props: any) => {
   const { id } = useParams();
+  const { loading, error, data } = useQuery(gql`{ allJobs { id, title, department {
+    id
+  }, tags {
+    id
+  }, description, requirements, country, city, street, zipCode, remote, employmentType, category, education, experience, minHours, maxHours, minSalary, maxSalary, resume, coverLetter, photo, phone, pipeline, candidateSet {
+    id,
+  }
+  } }`);
 
   const testData = {
     candidates: {

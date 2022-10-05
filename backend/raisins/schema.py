@@ -29,11 +29,18 @@ class Candidate(DjangoObjectType):
 class Query(graphene.ObjectType):
     all_jobs = graphene.List(JobType)
     all_candidates = graphene.List(Candidate)
+    job_by_id = graphene.Field(JobType, id=graphene.ID(required=True))
 
     def resolve_all_jobs(root, info):
         return Job.objects.all()
 
     def resolve_all_candidates(root, info):
         return Candidate.objects.all()
+
+    def resolve_job_by_id(root, info, id):
+        try:
+            return Job.objects.get(id=id)
+        except Job.DoesNotExist:
+            return None
 
 schema = graphene.Schema(query=Query)

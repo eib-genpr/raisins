@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Layout as AntLayout, Menu, Button } from 'antd';
 import {
   PlusOutlined,
@@ -10,6 +10,12 @@ const { Header, Sider, Content } = AntLayout;
 
 function Layout(props: any) {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const onMenuSelected = ({ key }) => {
+    if (key === '/jobs')
+      navigate('/jobs');
+  };
 
   return (
     <AntLayout style={{height: '100vh'}}>
@@ -23,14 +29,16 @@ function Layout(props: any) {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['1']}
+          selectedKeys={[location.pathname]}
+          onSelect={onMenuSelected}
           items={[
             {
-              key: '1',
+              key: '/jobs',
               icon: <ShoppingOutlined />,
               label: 'Jobs',
             },
             {
-              key: '2',
+              key: '/candidates',
               icon: <UserOutlined />,
               label: 'Candidates',
             },

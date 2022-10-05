@@ -1,6 +1,7 @@
 import { Tabs, Card } from 'antd';
 import { ThunderboltOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import { useQuery, gql } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -13,8 +14,14 @@ height: 100vh;
 `;
 
 function JobPreview(props: any) {
+  const navigate = useNavigate();
+
+  const onJobClick = () => {
+    navigate('/job/' + props.job.id);
+  };
+
   return (
-    <Card size="small" title={props.job.title} extra={<a href="#">More</a>} style={{ width: 1000, height: 150, marginTop: '5px', position: 'relative' }}>
+    <Card size="small" title={props.job.title} extra={<a href="#">More</a>} style={{ width: 1000, height: 150, marginTop: '5px', position: 'relative' }} onClick={onJobClick}>
       {props.job.remote ? 'Remote' : props.job.country ? (props.job.country + ' ' + props.job.city) : <></>}
       <div style={{ position: 'absolute', bottom: '0' }}>
         {props.job.candidateSet.length} {props.job.candidateSet.length === 1 ? 'candidate' : 'candidates'}
