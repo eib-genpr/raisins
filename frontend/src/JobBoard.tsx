@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
@@ -11,34 +11,69 @@ display: flex;
 
 const JobBoard: React.FC = (props: any) => {
   const { id } = useParams();
-  const { loading, error, data } = useQuery(gql`{ allJobs { id, title, department {
-    id
-  }, tags {
-    id
-  }, description, requirements, country, city, street, zipCode, remote, employmentType, category, education, experience, minHours, maxHours, minSalary, maxSalary, resume, coverLetter, photo, phone, pipeline, candidateSet {
-    id,
-  }
-  } }`);
+  const { loading, error, data } = useQuery(gql`query getJob($jobId: ID!) {
+    jobById(id: $jobId) {
+      id
+      title
+      department {
+        id
+      }
+      tags {
+        id
+      }
+      description
+      requirements
+      country
+      city
+      street
+      zipCode
+      remote
+      employmentType
+      category
+      education
+      experience
+      minHours
+      maxHours
+      minSalary
+      maxSalary
+      resume
+      coverLetter
+      photo
+      phone
+      pipeline
+      candidateSet {
+        id
+      }
+    }
+  }`, {variables: {jobId: id}});
 
-  const testData = {
-    candidates: {
-      'candidate-1': { id: 'candidate-1', content: 'blah4' },
-      'candidate-2': { id: 'candidate-2', content: 'blah3' },
-      'candidate-3': { id: 'candidate-3', content: 'blah1' },
-      'candidate-4': { id: 'candidate-4', content: 'blah2' },
-    },
-    steps: {
-      'step-1': { id: 'step-1', title: 'ColBlah', candidateIds: ['candidate-1', 'candidate-2', 'candidate-3', 'candidate-4'] },
-      'step-2': { id: 'step-2', title: 'Col2', candidateIds: []},
-      'step-3': { id: 'step-3', title: 'Col3', candidateIds: []},
-      'step-4': { id: 'step-4', title: 'Col3', candidateIds: []},
-      'step-5': { id: 'step-5', title: 'Col3', candidateIds: []},
-      'step-6': { id: 'step-6', title: 'Col3', candidateIds: []},
-    },
-    stepOrder: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6'],
-  };
+  /*
+     const testData = {
+candidates: {
+'candidate-1': { id: 'candidate-1', content: 'blah4' },
+'candidate-2': { id: 'candidate-2', content: 'blah3' },
+'candidate-3': { id: 'candidate-3', content: 'blah1' },
+'candidate-4': { id: 'candidate-4', content: 'blah2' },
+},
+steps: {
+'step-1': { id: 'step-1', title: 'ColBlah', candidateIds: ['candidate-1', 'candidate-2', 'candidate-3', 'candidate-4'] },
+'step-2': { id: 'step-2', title: 'Col2', candidateIds: []},
+'step-3': { id: 'step-3', title: 'Col3', candidateIds: []},
+'step-4': { id: 'step-4', title: 'Col3', candidateIds: []},
+'step-5': { id: 'step-5', title: 'Col3', candidateIds: []},
+'step-6': { id: 'step-6', title: 'Col3', candidateIds: []},
+},
+stepOrder: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6'],
+};
+*/
 
-  const [state, setState] = useState(testData);
+  const [state, setState] = useState<any>({});
+
+  useEffect(() => {
+    const newState = {candidates: {}, steps: {}, stepOrder: []};
+    const pipeline = data.jobById.pipeline;
+    // TODO
+  }, [data]);
 
   const onDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
@@ -98,7 +133,7 @@ const JobBoard: React.FC = (props: any) => {
   return (
     <Container>
       <DragDropContext onDragEnd={onDragEnd}>
-        {state.stepOrder.map(cid => {
+        {state.stepOrder?.map(cid => {
           const step = state.steps[cid];
           const elems = step.candidateIds.map((tid: any) => state.candidates[tid]);
           return <Step key={cid} step={step} candidates={elems} />
