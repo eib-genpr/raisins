@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'djoser',
+    'graphene_django',
     'corsheaders',
+    'raisins.jobs',
 ]
 
 MIDDLEWARE = [
@@ -139,4 +141,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
+}
+
+GRAPHENE = {
+    'SCHEMA': 'raisins.schema.schema'
 }

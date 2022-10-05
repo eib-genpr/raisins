@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django_countries.fields import CountryField
-from jsonfield import JSONField
 
 class Tags(models.Model):
     name = models.CharField(max_length=255)
@@ -40,9 +39,9 @@ class Job(models.Model):
         HIDDEN = 'H', 'Hidden'
 
     title = models.CharField(max_length=255)
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL)
-    recruiter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL)
-    hiring_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL)
+    department = models.ForeignKey(Department, null=True, on_delete=models.SET_NULL)
+    recruiter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='recruiter', null=True)
+    hiring_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='hiring_manager', null=True)
     tags = models.ManyToManyField(Tags)
     description = models.CharField(max_length=20000)
     requirements = models.CharField(max_length=20000)
@@ -57,14 +56,14 @@ class Job(models.Model):
     experience = models.CharField(max_length=2, choices=Experience.choices)
     min_hours = models.IntegerField()
     max_hours = models.IntegerField()
-    min_salary = models.DecimalField()
-    max_salary = models.DecimalField()
+    min_salary = models.DecimalField(decimal_places=2, max_digits=16)
+    max_salary = models.DecimalField(decimal_places=2, max_digits=16)
     #salary_period = models.CharField(max_length=2, choices=SalaryPeriod.choices)
     # currency =
     resume = models.CharField(max_length=1, choices=RequirementType.choices)
     cover_letter = models.CharField(max_length=1, choices=RequirementType.choices)
     photo = models.CharField(max_length=1, choices=RequirementType.choices)
-    phone = models.CharField(max_lenght=1, choices=RequirementType.choices)
-    pipeline = JSONField()
+    phone = models.CharField(max_length=1, choices=RequirementType.choices)
+    pipeline = models.JSONField()
 
 
