@@ -1,4 +1,5 @@
 from django.urls import include, path, re_path
+from django.contrib import admin
 from rest_framework import routers
 from raisins.auth import views
 from django.views.decorators.csrf import csrf_exempt
@@ -9,6 +10,7 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
+    re_path(r'^admin/', admin.site.urls),
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     re_path(r'^auth/', include('djoser.urls')),

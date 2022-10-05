@@ -1,12 +1,22 @@
 from django.db import models
+from django.contrib import admin
 from django.conf import settings
 from django_countries.fields import CountryField
 
-class Tags(models.Model):
+
+class Tag(models.Model):
     name = models.CharField(max_length=255)
+
+
+admin.site.register(Tag)
+
 
 class Department(models.Model):
     name = models.CharField(max_length=255)
+
+
+admin.site.register(Department)
+
 
 class Job(models.Model):
     class EmploymentType(models.TextChoices):
@@ -39,31 +49,32 @@ class Job(models.Model):
         HIDDEN = 'H', 'Hidden'
 
     title = models.CharField(max_length=255)
-    department = models.ForeignKey(Department, null=True, on_delete=models.SET_NULL)
-    recruiter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='recruiter', null=True)
-    hiring_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='hiring_manager', null=True)
-    tags = models.ManyToManyField(Tags)
-    description = models.CharField(max_length=20000)
-    requirements = models.CharField(max_length=20000)
-    country = CountryField()
-    city = models.CharField(max_length=255)
-    street = models.CharField(max_length=255)
-    zip_code = models.CharField(max_length=128)
-    remote = models.BooleanField()
-    employment_type = models.CharField(max_length=2, choices=EmploymentType.choices)
-    category = models.CharField(max_length=2, choices=Category.choices)
-    education = models.CharField(max_length=2, choices=Education.choices)
-    experience = models.CharField(max_length=2, choices=Experience.choices)
-    min_hours = models.IntegerField()
-    max_hours = models.IntegerField()
-    min_salary = models.DecimalField(decimal_places=2, max_digits=16)
-    max_salary = models.DecimalField(decimal_places=2, max_digits=16)
+    department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.SET_NULL)
+    recruiter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='recruiter', null=True, blank=True)
+    hiring_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='hiring_manager', null=True, blank=True)
+    tags = models.ManyToManyField(Tag)
+    description = models.CharField(max_length=20000, null=True, blank=True)
+    requirements = models.CharField(max_length=20000, null=True, blank=True)
+    country = CountryField(null=True, blank=True)
+    city = models.CharField(max_length=255, null=True, blank=True)
+    street = models.CharField(max_length=255, null=True, blank=True)
+    zip_code = models.CharField(max_length=128, null=True, blank=True)
+    remote = models.BooleanField(null=True, blank=True)
+    employment_type = models.CharField(max_length=2, choices=EmploymentType.choices, null=True, blank=True)
+    category = models.CharField(max_length=2, choices=Category.choices, null=True, blank=True)
+    education = models.CharField(max_length=2, choices=Education.choices, null=True, blank=True)
+    experience = models.CharField(max_length=2, choices=Experience.choices, null=True, blank=True)
+    min_hours = models.IntegerField(null=True, blank=True)
+    max_hours = models.IntegerField(null=True, blank=True)
+    min_salary = models.DecimalField(decimal_places=2, max_digits=16, null=True, blank=True)
+    max_salary = models.DecimalField(decimal_places=2, max_digits=16, null=True, blank=True)
     #salary_period = models.CharField(max_length=2, choices=SalaryPeriod.choices)
     # currency =
-    resume = models.CharField(max_length=1, choices=RequirementType.choices)
-    cover_letter = models.CharField(max_length=1, choices=RequirementType.choices)
-    photo = models.CharField(max_length=1, choices=RequirementType.choices)
-    phone = models.CharField(max_length=1, choices=RequirementType.choices)
-    pipeline = models.JSONField()
+    resume = models.CharField(max_length=1, choices=RequirementType.choices, null=True, blank=True)
+    cover_letter = models.CharField(max_length=1, choices=RequirementType.choices, null=True, blank=True)
+    photo = models.CharField(max_length=1, choices=RequirementType.choices, null=True, blank=True)
+    phone = models.CharField(max_length=1, choices=RequirementType.choices, null=True, blank=True)
+    pipeline = models.JSONField(null=True, blank=True)
 
 
+admin.site.register(Job)
