@@ -42,13 +42,18 @@ const JobBoard: React.FC = (props: any) => {
       phone
       pipeline
       candidateSet {
-        id,
+        id
+        name
+        surname
         steps {
-          id,
+          id
+          step
+          candidate {
+            id
+          }
           job {
             id
-          },
-          step
+          }
         }
       }
     }
@@ -79,7 +84,23 @@ stepOrder: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6'],
   useEffect(() => {
     if (data) {
       const newState = {candidates: {}, steps: {}, stepOrder: []};
-      const pipeline = data.jobById.pipeline;
+      const pipeline = JSON.parse(data.jobById.pipeline);
+      newState.stepOrder = pipeline;
+      let steps = {};
+      for (let step of pipeline)
+        steps[step] = { id: step, title: step, candidateIds: [] };
+      newState.steps = steps;
+
+      let candidates = {};
+      for (let candidate of data.jobById.candidateSet)
+        candidates[candidate.id] = { id: candidate.id, content: candidate.name + ' ' + candidate.surname };
+      newState.candidates = candidates;
+
+      for (let candidate of data.jobById.candidateSet)
+        for (let step of candidate.steps)
+          newState.steps[Object.keys(newState.steps)[step.step]].candidateIds.push(candidate.id);
+
+      setState(newState);
     }
   }, [data]);
 
@@ -143,7 +164,7 @@ stepOrder: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6'],
       <DragDropContext onDragEnd={onDragEnd}>
         {state.stepOrder?.map(cid => {
           const step = state.steps[cid];
-          const elems = step.candidateIds.map((tid: any) => state.candidates[tid]);
+          const elems = step?.candidateIds.map((tid: any) => state.candidates[tid]);
           return <Step key={cid} step={step} candidates={elems} />
         })}
       </DragDropContext>
