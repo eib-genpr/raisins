@@ -14,18 +14,24 @@ height: 100vh;
 
 function JobPreview(props: any) {
   return (
-    <Card size="small" title={props.job.title} extra={<a href="#">More</a>} style={{ width: 1000, height: 150, marginTop: '5px' }}>
+    <Card size="small" title={props.job.title} extra={<a href="#">More</a>} style={{ width: 1000, height: 150, marginTop: '5px', position: 'relative' }}>
       {props.job.remote ? 'Remote' : props.job.country ? (props.job.country + ' ' + props.job.city) : <></>}
+      <div style={{ position: 'absolute', bottom: '0' }}>
+        {props.job.candidateSet.length} {props.job.candidateSet.length === 1 ? 'candidate' : 'candidates'}
+      </div>
     </Card>
   );
 }
 
 function Jobs() {
   const { loading, error, data } = useQuery(gql`{ allJobs { id, title, department {
-  id
-}, tags {
-  id
-}, description, requirements, country, city, street, zipCode, remote, employmentType, category, education, experience, minHours, maxHours, minSalary, maxSalary, resume, coverLetter, photo, phone, pipeline } }`);
+    id
+  }, tags {
+    id
+  }, description, requirements, country, city, street, zipCode, remote, employmentType, category, education, experience, minHours, maxHours, minSalary, maxSalary, resume, coverLetter, photo, phone, pipeline, candidateSet {
+    id,
+  }
+  } }`);
 
   const tabs = [
     {
