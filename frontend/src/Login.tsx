@@ -16,7 +16,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (localStorage.getItem('access'))
-      navigate('/job');
+      navigate('/jobs');
   }, []);
 
   const onFinish = async (values: any) => {

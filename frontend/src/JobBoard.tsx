@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Button } from 'antd';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-  PlusOutlined,
-  ShoppingOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Step from './Step';
-
-const { Header, Sider, Content } = Layout;
 
 const Container = styled.div`
 display: flex;
 `;
 
-const JobBoard: React.FC = () => {
+const JobBoard: React.FC = (props: any) => {
+  const { id } = useParams();
+
   const testData = {
     candidates: {
       'candidate-1': { id: 'candidate-1', content: 'blah4' },
@@ -92,55 +87,15 @@ const JobBoard: React.FC = () => {
   };
 
   return (
-    <Layout style={{height: '100vh'}}>
-      <Sider trigger={null} collapsed={true}>
-        <div className="logo">
-        </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <ShoppingOutlined />,
-              label: 'Jobs',
-            },
-            {
-              key: '2',
-              icon: <UserOutlined />,
-              label: 'Candidates',
-            },
-          ]}
-        />
-      </Sider>
-      <Layout className="site-layout" style={{ display: 'inline-table' }}>
-        <Header className="site-layout-background" style={{ padding: 0 }}>
-          <Button type="primary" icon={<PlusOutlined />} style={{ marginLeft: '10px' }}>
-            New
-          </Button>
-        </Header>
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            minWidth: '100%',
-          }}
-        >
-          <Container>
-            <DragDropContext onDragEnd={onDragEnd}>
-              {state.stepOrder.map(cid => {
-                const step = state.steps[cid];
-                const elems = step.candidateIds.map((tid: any) => state.candidates[tid]);
-                return <Step key={cid} step={step} candidates={elems} />
-              })}
-            </DragDropContext>
-          </Container>
-        </Content>
-      </Layout>
-    </Layout>
+    <Container>
+      <DragDropContext onDragEnd={onDragEnd}>
+        {state.stepOrder.map(cid => {
+          const step = state.steps[cid];
+          const elems = step.candidateIds.map((tid: any) => state.candidates[tid]);
+          return <Step key={cid} step={step} candidates={elems} />
+        })}
+      </DragDropContext>
+    </Container>
   );
 };
 
