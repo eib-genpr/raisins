@@ -42,7 +42,14 @@ const JobBoard: React.FC = (props: any) => {
       phone
       pipeline
       candidateSet {
-        id
+        id,
+        steps {
+          id,
+          job {
+            id
+          },
+          step
+        }
       }
     }
   }`, {variables: {jobId: id}});
@@ -70,9 +77,10 @@ stepOrder: ['step-1', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6'],
   const [state, setState] = useState<any>({});
 
   useEffect(() => {
-    const newState = {candidates: {}, steps: {}, stepOrder: []};
-    const pipeline = data.jobById.pipeline;
-    // TODO
+    if (data) {
+      const newState = {candidates: {}, steps: {}, stepOrder: []};
+      const pipeline = data.jobById.pipeline;
+    }
   }, [data]);
 
   const onDragEnd = (result: any) => {

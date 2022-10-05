@@ -17,4 +17,12 @@ class Candidate(models.Model):
     cover_letter = models.BinaryField(null=True, blank=True)
 
 
+class CandidateJobStep(models.Model):
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name='steps')
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    step = models.PositiveSmallIntegerField(default=0)
+
+
+
 admin.site.register(Candidate)
+admin.site.register(CandidateJobStep)
