@@ -75,6 +75,8 @@ class Job(models.Model):
     photo = models.CharField(max_length=1, choices=RequirementType.choices, null=True, blank=True)
     phone = models.CharField(max_length=1, choices=RequirementType.choices, null=True, blank=True)
     pipeline = models.JSONField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 admin.site.register(Job)

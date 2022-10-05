@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'corsheaders',
     'raisins.jobs',
+    'raisins.candidates',
 ]
 
 MIDDLEWARE = [
