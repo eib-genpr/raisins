@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'antd/dist/antd.min.css';
 import 'react-toastify/dist/ReactToastify.css';
-import Login from './Login';
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import Login from './Login'
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,21 +16,28 @@ import JobBoard from './JobBoard';
 import Jobs from './Jobs';
 import Layout from './Layout';
 
+const client = new ApolloClient({
+  uri: process.env.REACT_APP_API_URL + '/graphql',
+  cache: new InMemoryCache(),
+});
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/job/:id" element={<JobBoard />} />
-          <Route path="/jobs" element={<Jobs />} />
-        </Routes>
-      </Layout>
-    </Router>
-    <ToastContainer />
+    <ApolloProvider client={client}>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/job/:id" element={<JobBoard />} />
+            <Route path="/jobs" element={<Jobs />} />
+          </Routes>
+        </Layout>
+      </Router>
+      <ToastContainer />
+    </ApolloProvider>
   </React.StrictMode>
 );
 
