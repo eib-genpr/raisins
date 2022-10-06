@@ -1,23 +1,52 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Layout as AntLayout, Menu, Button } from 'antd';
+import { useState } from 'react';
+import { Layout as AntLayout, Menu, Button, Dropdown } from 'antd';
 import {
   PlusOutlined,
   ShoppingOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import NewCandidateModal from './NewCandidateModal';
 
 const { Header, Sider, Content } = AntLayout;
 
 function Layout(props: any) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [newCandidateModalOpen, setNewCandidateModalOpen] = useState(false);
 
   const onMenuSelected = ({ key }) => {
     if (key === '/jobs')
       navigate('/jobs');
   };
 
-  return (
+  const newMenu = (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: (
+            <a target="_blank" rel="noopener noreferrer" onClick={() => setNewCandidateModalOpen(true)}>
+              Candidate
+            </a>
+          ),
+          icon: <UserOutlined />
+        },
+        {
+          key: '2',
+          label: (
+            <a target="_blank" rel="noopener noreferrer">
+              Job
+            </a>
+          ),
+          icon: <ShoppingOutlined />
+        },
+      ]}
+    />
+  );
+
+  return (<>
+    <NewCandidateModal open={newCandidateModalOpen} setOpen={setNewCandidateModalOpen} />
     <AntLayout style={{height: '100vh'}}>
       <Sider trigger={null} collapsed={true} style={{ height: '100vh' }}>
         <div className="logo">
@@ -47,9 +76,11 @@ function Layout(props: any) {
       </Sider>
       <AntLayout className="site-layout" style={{ display: 'inline-table' }}>
         <Header className="site-layout-background" style={{ padding: 0 }}>
-          <Button type="primary" icon={<PlusOutlined />} style={{ marginLeft: '10px' }}>
-            New
-          </Button>
+          <Dropdown overlay={newMenu}>
+            <Button type="primary" icon={<PlusOutlined />} style={{ marginLeft: '10px' }}>
+              New
+            </Button>
+          </Dropdown>
         </Header>
         <Content
           className="site-layout-background"
@@ -64,7 +95,8 @@ function Layout(props: any) {
         </Content>
       </AntLayout>
     </AntLayout>
-  );
+  </>
+         );
 }
 
 export default Layout;
