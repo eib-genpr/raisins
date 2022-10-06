@@ -19,8 +19,6 @@ class JobType(DjangoObjectType):
         model = Job
         fields = ('id', 'title', 'department', 'recruiter', 'hiring_manager', 'tags', 'description', 'requirements', 'country', 'city', 'street', 'zip_code', 'remote', 'employment_type', 'category', 'education', 'experience', 'min_hours', 'max_hours', 'min_salary', 'max_salary', 'resume', 'cover_letter', 'photo', 'phone', 'pipeline', 'updated_at', 'created_at', 'candidate_set')
 
-
-
 class CandidateJobStepType(DjangoObjectType):
     class Meta:
         model = CandidateJobStep

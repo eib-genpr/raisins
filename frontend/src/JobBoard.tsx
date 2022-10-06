@@ -137,6 +137,22 @@ const JobBoard: React.FC = (props: any) => {
       },
     };
     setState(newState);
+
+
+    const droppedState = JSON.parse(data.jobById.pipeline).indexOf(destination.droppableId);
+    const body = {
+      step: droppedState,
+      job: data.jobById.id,
+      candidate: result.draggableId,
+    }
+    fetch(
+      process.env.REACT_APP_API_URL + '/cjs/' + data.jobById.candidateSet[result.draggableId - 1].steps[0].id + '/',
+      {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: {'Content-Type': 'application/json'}
+      }
+    );
   };
 
   return (
