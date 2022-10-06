@@ -5,7 +5,6 @@ import Candidate from './Candidate';
 
 const Container = styled.div`
 margin: 8px;
-border: 1px solid lightgrey;
 border-radius: 2px;
 min-width: 220px;
 display: flex;
@@ -14,6 +13,7 @@ flex-direction: column;
 
 const Title = styled.h3`
 padding: 8px;
+font-weight: bold;
 `;
 
 const CandidateList = styled.div<{ isDraggingOver: boolean }>`

@@ -6,7 +6,7 @@ border: 1px solid lightgrey;
 border-radius: 2px;
 padding: 8px;
 margin-bottom: 8px;
-background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
+background-color: ${props => (props.isDragging ? 'lightgrey' : 'white')};
 display: flex;
 `;
 

@@ -13,8 +13,9 @@ import {
 import { ToastContainer } from 'react-toastify';
 import reportWebVitals from './reportWebVitals';
 import JobBoard from './JobBoard';
-import Jobs from './Jobs';
+import JobsTable from './JobsTable';
 import Layout from './Layout';
+import CandidatesTable from './CandidatesTable';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_API_URL + '/graphql',
@@ -32,7 +33,8 @@ root.render(
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/job/:id" element={<JobBoard />} />
-            <Route path="/jobs" element={<Jobs />} />
+            <Route path="/jobs" element={<JobsTable />} />
+            <Route path="/candidates" element={<CandidatesTable />} />
           </Routes>
         </Layout>
       </Router>

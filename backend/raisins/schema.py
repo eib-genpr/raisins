@@ -17,7 +17,7 @@ class TagType(DjangoObjectType):
 class JobType(DjangoObjectType):
     class Meta:
         model = Job
-        fields = ('id', 'title', 'department', 'recruiter', 'hiring_manager', 'tags', 'description', 'requirements', 'country', 'city', 'street', 'zip_code', 'remote', 'employment_type', 'category', 'education', 'experience', 'min_hours', 'max_hours', 'min_salary', 'max_salary', 'resume', 'cover_letter', 'photo', 'phone', 'pipeline', 'candidate_set')
+        fields = ('id', 'title', 'department', 'recruiter', 'hiring_manager', 'tags', 'description', 'requirements', 'country', 'city', 'street', 'zip_code', 'remote', 'employment_type', 'category', 'education', 'experience', 'min_hours', 'max_hours', 'min_salary', 'max_salary', 'resume', 'cover_letter', 'photo', 'phone', 'pipeline', 'updated_at', 'created_at', 'candidate_set')
 
 
 

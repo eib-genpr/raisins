@@ -29,6 +29,8 @@ function Layout(props: any) {
   const onMenuSelected = ({ key }) => {
     if (key === '/jobs')
       navigate('/jobs');
+    else if (key === '/candidates')
+      navigate('/candidates')
   };
 
   const newMenu = (
