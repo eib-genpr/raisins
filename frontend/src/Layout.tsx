@@ -7,6 +7,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import NewCandidateModal from './NewCandidateModal';
+import { useQuery, gql } from '@apollo/client';
 
 const { Header, Sider, Content } = AntLayout;
 
@@ -14,6 +15,16 @@ function Layout(props: any) {
   const location = useLocation();
   const navigate = useNavigate();
   const [newCandidateModalOpen, setNewCandidateModalOpen] = useState(false);
+
+  const { loading, error, data } = useQuery(gql`{ allJobs { id, title, department {
+    id
+  }, tags {
+    id
+  }, description, requirements, country, city, street, zipCode, remote, employmentType, category, education, experience, minHours, maxHours, minSalary, maxSalary, resume, coverLetter, photo, phone, pipeline, candidateSet {
+    id,
+  }
+  } }`);
+
 
   const onMenuSelected = ({ key }) => {
     if (key === '/jobs')
@@ -46,7 +57,7 @@ function Layout(props: any) {
   );
 
   return (<>
-    <NewCandidateModal open={newCandidateModalOpen} setOpen={setNewCandidateModalOpen} />
+    <NewCandidateModal open={newCandidateModalOpen} setOpen={setNewCandidateModalOpen} jobs={data?.allJobs} />
     <AntLayout style={{height: '100vh'}}>
       <Sider trigger={null} collapsed={true} style={{ height: '100vh' }}>
         <div className="logo">
