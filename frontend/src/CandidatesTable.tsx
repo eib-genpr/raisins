@@ -71,25 +71,17 @@ function CandidatesTable() {
     },
   ];
 
-  const tabs = [
-    {
-      label: (<span><ThunderboltOutlined />Active</span>),
-      key: 'active',
-      children: <Table dataSource={data?.allCandidates} columns={columns} onRow={(record, index) => {
-        return {
-          onClick: (e) => navigate('/job/' + record.id),
-        };
-      }}></Table>
-    },
-    { label: (<span><FieldTimeOutlined />Archived</span>), key: 'archived', children: 'Content 2' }
-  ];
-
   if (loading)
     return <span>Loading...</span>
 
   return (
     <>
-      <Tabs items={tabs}></Tabs>
+<Table dataSource={data?.allCandidates} columns={columns} onRow={(record, index) => {
+        return {
+          onClick: (e) => navigate('/candidate/' + record.id),
+        };
+      }}></Table>
+
     </>
   )
 }

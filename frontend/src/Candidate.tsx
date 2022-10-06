@@ -1,30 +1,45 @@
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Draggable } from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { useQuery, gql } from '@apollo/client';
+import Step from './Step';
 
-const Container = styled.div<{ isDragging: boolean }>`
-border: 1px solid lightgrey;
-border-radius: 2px;
-padding: 8px;
-margin-bottom: 8px;
-background-color: ${props => (props.isDragging ? 'lightgrey' : 'white')};
+const Container = styled.div`
 display: flex;
 `;
 
-function Candidate(props) {
+const Candidate: React.FC = (props: any) => {
+  const { id } = useParams();
+  const { loading, error, data } = useQuery(gql`query getCandidate($candidateId: ID!) {
+    candidateById(id: $candidateId) {
+      id
+      name
+      surname
+      middlename
+      email
+      phone
+      jobs {
+        id
+        title
+      }
+      address
+      salaryExpectation
+      timezone
+      steps {
+        id
+        job {
+          id
+          title
+        }
+        step
+      }
+    }
+  }`, {variables: {candidateId: id}});
+
   return (
-    <Draggable draggableId={props.candidate.id} index={props.index}>
-      {(provided, snapshot) => (
-        <Container
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          isDragging={snapshot.isDragging}
-        >
-          {props.candidate.content}
-        </Container>
-      )}
-    </Draggable>
+    <>{id}</>
   );
-}
+};
 
 export default Candidate;

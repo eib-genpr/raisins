@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
-import Candidate from './Candidate';
+import CandidateDraggable from './CandidateDraggable';
 
 const Container = styled.div`
 margin: 8px;
@@ -31,7 +31,7 @@ class InnerList extends React.Component<{ candidates: any }> {
   }
   render() {
     return this.props.candidates.map((t: any, i: number) => (
-      <Candidate key={t.id} candidate={t} index={i} />
+      <CandidateDraggable key={t.id} candidate={t} index={i} />
     ));
   }
 }
