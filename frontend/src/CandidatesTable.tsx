@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import TimeAgo from 'javascript-time-ago';
 import { useEffect } from 'react';
 import en from 'javascript-time-ago/locale/en'
+import Avatar from './Avatar';
 
 const Container = styled.div`
 display: flex;
@@ -52,7 +53,7 @@ function CandidatesTable() {
       title: 'Full name',
       key: 'title',
       render: e => {
-        return <>{e.name} {e.surname}</>
+        return <div style={{ display: 'flex', alignItems: 'center' }}><Avatar userId={e.id} size={2} text={`${e.name[0]}${e.surname[0]}`}/>{e.name} {e.surname}</div>
       }
     },
       {

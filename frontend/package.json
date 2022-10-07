@@ -14,6 +14,8 @@
     "@types/react-dom": "^18.0.0",
     "@types/styled-components": "^5.1.26",
     "antd": "^4.23.4",
+    "color-hash": "^2.0.1",
+    "contrast-color": "^1.0.1",
     "graphql": "^16.6.0",
     "javascript-time-ago": "^2.5.7",
     "react": "^18.2.0",

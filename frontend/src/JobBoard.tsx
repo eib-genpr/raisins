@@ -73,7 +73,7 @@ const JobBoard: React.FC = (props: any) => {
 
       let candidates = {};
       for (let candidate of data.jobById.candidateSet)
-        candidates[candidate.id] = { id: candidate.id, content: candidate.name + ' ' + candidate.surname };
+        candidates[candidate.id] = { id: candidate.id, content: candidate };
       newState.candidates = candidates;
 
       for (let candidate of data.jobById.candidateSet)

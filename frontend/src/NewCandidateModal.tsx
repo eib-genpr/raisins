@@ -1,7 +1,9 @@
-import { Modal, Form, Input, Select, Avatar } from 'antd';
+import { Modal, Form, Input, Select, Avatar, Button, Upload, message } from 'antd';
 import { UserOutlined, PhoneOutlined, MailOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import { UploadOutlined } from '@ant-design/icons';
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 
 const AvatarStyled = styled.div`
 *:hover {
@@ -14,11 +16,49 @@ function NewCandidateModal(props: any) {
   const [form] = Form.useForm();
   const [steps, setSteps] = useState([]);
   const [chosenJob, setChosenJob] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [fileUploaded, setFileUploaded] = useState(false);
 
   useEffect(() => {
     if (chosenJob.length)
     setSteps(JSON.parse(props.jobs.filter((j) => j.id === chosenJob)[0].pipeline));
   }, [chosenJob]);
+
+  const handleUpload = (file) => {
+    const formData = new FormData();
+    formData.append('file', file as RcFile);
+    console.log(file.name.split('.').pop());
+    if (['pdf', 'doc', 'docx'].includes(file.name.split('.').pop().toLowerCase()) === false) {
+      message.error('Only PDF, DOC, and DOCX files are allowed');
+      return;
+    }
+    setUploading(true);
+    fetch(process.env.REACT_APP_API_URL + '/resume/' + file.name, {
+      method: 'PUT',
+      body: formData,
+    })
+      .then(res => res.json())
+      .then((r) => {
+        message.success('Uploaded successfully');
+        setFileUploaded(true);
+      })
+      .catch((e) => {
+        message.error('Upload failed');
+      })
+      .finally(() => {
+        setUploading(false);
+      });
+  };
+
+  const uploadProps: UploadProps = {
+    onRemove: file => {
+    },
+    beforeUpload: file => {
+      handleUpload(file);
+      return false;
+    },
+    fileList: [],
+  };
 
   const onFinish = () => {
 
@@ -58,6 +98,8 @@ function NewCandidateModal(props: any) {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
+        <Upload {...uploadProps}><Button loading={uploading} type='primary' icon={<UploadOutlined />}>Upload CV</Button></Upload>
+        {fileUploaded && <span style={{ color: 'darkgreen' }}>CV is attached</span>}
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'center' }}>
           <AvatarStyled>
             <Avatar size={64} icon={<UserOutlined />} style={{  }} />
