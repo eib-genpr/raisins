@@ -1,5 +1,5 @@
 import { Modal, Form, Input, Select, Avatar, Button, Upload, message } from 'antd';
-import { PhoneOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { PhoneOutlined, MailOutlined, UserOutlined, ShoppingOutlined,  EnvironmentOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
@@ -21,7 +21,7 @@ function NewCandidateModal(props: any) {
   const [fileUploaded, setFileUploaded] = useState(false);
 
   useEffect(() => {
-    if (chosenJob.length)
+    if (chosenJob?.length)
       setSteps(JSON.parse(props.jobs.filter((j) => j.id === chosenJob)[0].pipeline));
   }, [chosenJob]);
 
@@ -144,9 +144,14 @@ function NewCandidateModal(props: any) {
 
 
           <div>
-            <Form.Item name="job" label="Job" rules={[{ required: false }]}>
+            <ShoppingOutlined style={{ marginTop: '8px', marginRight: '4px' }} />
+            <Form.Item
+              name="job"
+              rules={[{ required: false }]}
+              style={{ display: 'inline-block', width: '45%' }}
+            >
               <Select
-                placeholder="Select a job"
+                placeholder="Job"
                 onChange={onJobChange}
                 allowClear
               >
@@ -155,17 +160,22 @@ function NewCandidateModal(props: any) {
                 ))}
               </Select>
             </Form.Item>
-            {chosenJob.length && 
-            <Select
-              placeholder="Select a step"
-              onChange={onStepChange}
-              allowClear
+            <Form.Item
+              name="stage"
+              rules={[{ required: false }]}
+              style={{ display: 'inline-block', width: '45%' }}
             >
-              {steps?.map((s) => (
-                <Select.Option value={s}>{s}</Select.Option>
-              ))}
-            </Select>
-            }
+              <Select
+                placeholder="Stage"
+                disabled={!!!chosenJob?.length}
+                onChange={onStepChange}
+                allowClear
+              >
+                {steps?.map((s) => (
+                  <Select.Option value={s}>{s}</Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
 
           </div>
         </div>
