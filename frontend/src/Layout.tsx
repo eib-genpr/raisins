@@ -7,6 +7,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import NewCandidateModal from './NewCandidateModal';
+import NewJobModal from './NewJobModal';
 import { useQuery, gql } from '@apollo/client';
 
 const { Header, Sider, Content } = AntLayout;
@@ -15,6 +16,7 @@ function Layout(props: any) {
   const location = useLocation();
   const navigate = useNavigate();
   const [newCandidateModalOpen, setNewCandidateModalOpen] = useState(false);
+  const [newJobModalOpen, setNewJobModalOpen] = useState(false);
 
   const { loading, error, data } = useQuery(gql`{ allJobs { id, title, department {
     id
@@ -48,7 +50,7 @@ function Layout(props: any) {
         {
           key: '2',
           label: (
-            <a target="_blank" rel="noopener noreferrer">
+            <a target="_blank" rel="noopener noreferrer" onClick={() => setNewJobModalOpen(true)}>
               Job
             </a>
           ),
@@ -60,6 +62,7 @@ function Layout(props: any) {
 
   return (<>
     <NewCandidateModal open={newCandidateModalOpen} setOpen={setNewCandidateModalOpen} jobs={data?.allJobs} />
+    <NewJobModal open={newJobModalOpen} setOpen={setNewJobModalOpen} />
     <AntLayout style={{height: '100vh'}}>
       <Sider trigger={null} collapsed={true} style={{ height: '100vh' }}>
         <div className="logo">
