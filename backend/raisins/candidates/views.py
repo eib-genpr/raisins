@@ -16,7 +16,7 @@ class CandidateViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         response = super(CandidateViewSet, self).create(request, *args, **kwargs)
-        if request.data['job']:
+        if 'job' in request.data:
             Candidate.objects.get(pk=response.data['id']).jobs.add(request.data['job'])
             CandidateJobStep.objects.create(
                 job=Job.objects.get(pk=request.data['job']),

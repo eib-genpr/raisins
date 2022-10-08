@@ -34,7 +34,6 @@ function Layout(props: any) {
       navigate('/jobs');
     else if (key === '/candidates')
       navigate('/candidates')
-    refetch();
   };
 
   const newMenu = (

@@ -1,5 +1,5 @@
 import { Tabs, Card, Table } from 'antd';
-import { ThunderboltOutlined, FieldTimeOutlined } from '@ant-design/icons';
+import { useLocation } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -21,7 +21,8 @@ TimeAgo.addDefaultLocale(en)
 
 function CandidatesTable() {
   const navigate = useNavigate();
-  const { loading, error, data } = useQuery(gql`{
+  const location = useLocation();
+  const { loading, error, data, refetch } = useQuery(gql`{
     allCandidates {
         id
         fullname
@@ -45,6 +46,10 @@ function CandidatesTable() {
       }
     }
   }`);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const columns = [
     {
