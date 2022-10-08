@@ -28,7 +28,6 @@ function NewCandidateModal(props: any) {
   const handleUpload = (file) => {
     const formData = new FormData();
     formData.append('file', file as RcFile);
-    console.log(file.name.split('.').pop());
     if (['pdf', 'doc', 'docx'].includes(file.name.split('.').pop().toLowerCase()) === false) {
       message.error('Only PDF, DOC, and DOCX files are allowed');
       return;
