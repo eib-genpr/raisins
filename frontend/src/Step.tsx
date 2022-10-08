@@ -14,12 +14,14 @@ flex-direction: column;
 const Title = styled.h3`
 padding: 8px;
 font-weight: bold;
+text-decoration: underline;
+text-decoration-thickness: 5px;
 `;
 
-const CandidateList = styled.div<{ isDraggingOver: boolean }>`
+const CandidateList = styled.div<{ isDraggingOver: boolean, themeColor: string }>`
 padding: 8px;
 transition: background-color 0.2s ease;
-background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+background-color: ${props => (props.isDraggingOver ? props.themeColor : 'white')};
 flex-grow: 1;
 min-height: 100px;
 `;
@@ -54,13 +56,14 @@ function Step(props: any) {
 
   return (
     <Container>
-      <Title>{props.step.title}</Title>
+      <Title style={{ textDecorationColor: props.themeColor }}>{props.step.title}</Title>
       <Droppable droppableId={props.step.id}>
         {(provided, snapshot) => (
           <CandidateList
             {...provided.droppableProps}
             ref={provided.innerRef}
             isDraggingOver={snapshot.isDraggingOver}
+            themeColor={props.themeColor}
           >
             <InnerList candidates={props.candidates} />
             {provided.placeholder}

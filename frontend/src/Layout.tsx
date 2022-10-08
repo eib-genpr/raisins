@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import NewCandidateModal from './NewCandidateModal';
 import NewJobModal from './NewJobModal';
+import BottomBar from './BottomBar';
 import { useQuery, gql } from '@apollo/client';
 
 const { Header, Sider, Content } = AntLayout;
@@ -27,14 +28,6 @@ function Layout(props: any) {
     id,
   }
   } }`);
-
-
-  const onMenuSelected = ({ key }) => {
-    if (key === '/jobs')
-      navigate('/jobs');
-    else if (key === '/candidates')
-      navigate('/candidates')
-  };
 
   const newMenu = (
     <Menu
@@ -61,59 +54,14 @@ function Layout(props: any) {
     />
   );
 
-  return (<>
-    <NewCandidateModal open={newCandidateModalOpen} setOpen={setNewCandidateModalOpen} jobs={data?.allJobs} refetch={refetch} />
-    <NewJobModal open={newJobModalOpen} setOpen={setNewJobModalOpen} departments={[...new Set(data?.allJobs.map((j) => j.department))]} jobs={data?.allJobs} refetch={refetch} />
-    <AntLayout style={{height: '100vh'}}>
-      <Sider trigger={null} collapsed={true} style={{ height: '100vh' }}>
-        <div className="logo">
-        </div>
-
-        {location.pathname !== '/' &&
-        <Menu
-          style={{ height: '100vh' }}
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          selectedKeys={[location.pathname]}
-          onSelect={onMenuSelected}
-          items={[
-            {
-              key: '/jobs',
-              icon: <ShoppingOutlined />,
-              label: 'Jobs',
-            },
-            {
-              key: '/candidates',
-              icon: <UserOutlined />,
-              label: 'Candidates',
-            },
-          ]}
-        />}
-      </Sider>
-      <AntLayout className="site-layout" style={{ display: 'inline-table' }}>
-        <Header className="site-layout-background" style={{ padding: 0 }}>
-          <Dropdown overlay={newMenu}>
-            <Button type="primary" icon={<PlusOutlined />} style={{ marginLeft: '10px' }}>
-              New
-            </Button>
-          </Dropdown>
-        </Header>
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            height: '100vh',
-            width: '100%',
-          }}
-        >
-          {props.children}
-        </Content>
-      </AntLayout>
-    </AntLayout>
-  </>
-         );
+  return (
+    <>
+      <NewCandidateModal open={newCandidateModalOpen} setOpen={setNewCandidateModalOpen} jobs={data?.allJobs} refetch={refetch} />
+      <NewJobModal open={newJobModalOpen} setOpen={setNewJobModalOpen} departments={[...new Set(data?.allJobs.map((j) => j.department))]} jobs={data?.allJobs} refetch={refetch} />
+      {props.children}
+      <BottomBar />
+    </>
+  );
 }
 
 export default Layout;

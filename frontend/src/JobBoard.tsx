@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useQuery, gql } from '@apollo/client';
 import Step from './Step';
+import randomcolor from 'randomcolor';
 
 const Container = styled.div`
 display: flex;
@@ -160,7 +161,7 @@ const JobBoard: React.FC = (props: any) => {
         {state.stepOrder?.map(cid => {
           const step = state.steps[cid];
           const elems = step?.candidateIds.map((tid: any) => state.candidates[tid]);
-          return <Step key={cid} step={step} candidates={elems} />
+          return <Step key={cid} step={step} candidates={elems} themeColor={randomcolor()} />
         })}
       </DragDropContext>
     </Container>

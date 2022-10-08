@@ -17,6 +17,7 @@ import JobsTable from './JobsTable';
 import Layout from './Layout';
 import CandidatesTable from './CandidatesTable';
 import Candidate from './Candidate';
+import Dashboard from './Dashboard';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_API_URL + '/graphql',
@@ -37,6 +38,7 @@ root.render(
             <Route path="/jobs" element={<JobsTable />} />
             <Route path="/candidate/:id" element={<Candidate />} />
             <Route path="/candidates" element={<CandidatesTable />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </Layout>
       </Router>
