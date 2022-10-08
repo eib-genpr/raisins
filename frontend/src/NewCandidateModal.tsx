@@ -1,5 +1,5 @@
 import { Modal, Form, Input, Select, Avatar, Button, Upload, message } from 'antd';
-import { UserOutlined, PhoneOutlined, MailOutlined } from '@ant-design/icons';
+import { PhoneOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
@@ -10,6 +10,7 @@ const AvatarStyled = styled.div`
   background-color: green;
   pointer: cursor;
 }
+margin-bottom: 8px;
 `;
 
 function NewCandidateModal(props: any) {
@@ -21,7 +22,7 @@ function NewCandidateModal(props: any) {
 
   useEffect(() => {
     if (chosenJob.length)
-    setSteps(JSON.parse(props.jobs.filter((j) => j.id === chosenJob)[0].pipeline));
+      setSteps(JSON.parse(props.jobs.filter((j) => j.id === chosenJob)[0].pipeline));
   }, [chosenJob]);
 
   const handleUpload = (file) => {
@@ -37,17 +38,17 @@ function NewCandidateModal(props: any) {
       method: 'PUT',
       body: formData,
     })
-      .then(res => res.json())
-      .then((r) => {
-        message.success('Uploaded successfully');
-        setFileUploaded(true);
-      })
-      .catch((e) => {
-        message.error('Upload failed');
-      })
-      .finally(() => {
-        setUploading(false);
-      });
+    .then(res => res.json())
+    .then((r) => {
+      message.success('Uploaded successfully');
+      setFileUploaded(true);
+    })
+    .catch((e) => {
+      message.error('Upload failed');
+    })
+    .finally(() => {
+      setUploading(false);
+    });
   };
 
   const uploadProps: UploadProps = {
@@ -98,74 +99,63 @@ function NewCandidateModal(props: any) {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Upload {...uploadProps}><Button loading={uploading} type='primary' icon={<UploadOutlined />}>Upload CV</Button></Upload>
-        {fileUploaded && <span style={{ color: 'darkgreen' }}>CV is attached</span>}
-        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'center' }}>
-          <AvatarStyled>
-            <Avatar size={64} icon={<UserOutlined />} style={{  }} />
-          </AvatarStyled>
-          <Form.Item
-            style={{ width: '25%', paddingLeft: '10px' }}
-            label="First name"
-            name="First name"
-            rules={[{ required: true, message: 'Please enter first name' }]}
-          >
-            <Input />
-          </Form.Item>
+        <div style={{ display: 'grid', gridTemplateColumns: '20% 40% 40%', gap: '10px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gridRow: '1/3' }}>
+            <AvatarStyled>
+              <Avatar size={64} icon={<UserOutlined />} style={{  }} />
+            </AvatarStyled>
+            <Upload {...uploadProps}><Button loading={uploading} type='primary' icon={<UploadOutlined />}>Upload CV</Button></Upload>
+            {fileUploaded && <span style={{ color: 'darkgreen' }}>CV is attached</span>}
+          </div>
 
-          <Form.Item
-            style={{ width: '25%', paddingLeft: '10px' }}
-            label="Last name"
-            name="Last name"
-            rules={[{ required: true, message: 'Please enter last name'}]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            style={{ width: '25%', paddingLeft: '10px' }}
-            label="Middle name"
-            name="Middle name"
-            rules={[{ required: false }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'baseline' }}>
-            <PhoneOutlined style={{ paddingLeft: '10px' }}/>
+          <div>
+            <UserOutlined style={{marginTop: '8px', marginRight: '4px' }} />
             <Form.Item
-              style={{ width: '30%', paddingLeft: '10px' }}
-              label="Phone"
-              name="Phone"
-              rules={[{ required: false }]}
+              name="Full name"
+              rules={[{ required: true, message: 'Please enter the full name' }]}
+              style={{ display: 'inline-block', width: '90%' }}
             >
-              <Input />
-            </Form.Item>
-
-            <MailOutlined style={{ paddingLeft: '10px' }}/>
-            <Form.Item
-              style={{ width: '30%', paddingLeft: '10px' }}
-              label="Email"
-              name="Email"
-              rules={[{ required: false }]}
-            >
-              <Input />
+              <Input placeholder="Full name" />
             </Form.Item>
           </div>
-        </div>
-        <div>
-          <Form.Item name="job" label="Job" rules={[{ required: false }]} style={{ width: '50%' }}>
-            <Select
-              placeholder="Select a job"
-              onChange={onJobChange}
-              allowClear
+
+          <div>
+            <MailOutlined style={{ marginTop: '8px', marginRight: '4px' }}/>
+            <Form.Item
+              name="Email"
+              rules={[{ required: false }]}
+              style={{ display: 'inline-block', width: '90%' }}
             >
-              {props?.jobs?.map((j) => (
-                <Select.Option value={j.id}>{j.title}</Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          {chosenJob.length && 
+              <Input placeholder="Email" />
+            </Form.Item>
+          </div>
+
+          <div>
+            <PhoneOutlined style={{ marginTop: '8px', marginRight: '4px' }}/>
+            <Form.Item
+              name="Phone"
+              rules={[{ required: false }]}
+              style={{ display: 'inline-block', width: '90%' }}
+            >
+              <Input placeholder="Phone number" />
+            </Form.Item>
+          </div>
+
+
+
+          <div>
+            <Form.Item name="job" label="Job" rules={[{ required: false }]}>
+              <Select
+                placeholder="Select a job"
+                onChange={onJobChange}
+                allowClear
+              >
+                {props?.jobs?.map((j) => (
+                  <Select.Option value={j.id}>{j.title}</Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+            {chosenJob.length && 
             <Select
               placeholder="Select a step"
               onChange={onStepChange}
@@ -175,8 +165,9 @@ function NewCandidateModal(props: any) {
                 <Select.Option value={s}>{s}</Select.Option>
               ))}
             </Select>
-          }
+            }
 
+          </div>
         </div>
       </Form>
     </Modal>

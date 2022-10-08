@@ -24,9 +24,7 @@ function CandidatesTable() {
   const { loading, error, data } = useQuery(gql`{
     allCandidates {
         id
-      name
-      surname
-      middlename
+        fullname
       email
       phone
       jobs {
@@ -53,7 +51,7 @@ function CandidatesTable() {
       title: 'Full name',
       key: 'title',
       render: e => {
-        return <div style={{ display: 'flex', alignItems: 'center' }}><Avatar userId={e.id} size={2} text={`${e.name[0]}${e.surname[0]}`}/>{e.name} {e.surname}</div>
+        return <div style={{ display: 'flex', alignItems: 'center' }}><Avatar userId={e.id} size={2} text={`${e.fullname.split(' ')[0][0]}${e.fullname.split(' ')[1][0]}`}/>{e.fullname}</div>
       }
     },
       {

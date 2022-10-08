@@ -4,9 +4,7 @@ from raisins.jobs.models import Job
 
 
 class Candidate(models.Model):
-    name = models.CharField(max_length=255, null=True, blank=True)
-    surname = models.CharField(max_length=255, null=True, blank=True)
-    middlename = models.CharField(max_length=255, null=True, blank=True)
+    fullname = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(max_length=255, null=True, blank=True)
     phone = models.CharField(max_length=64, null=True, blank=True)
     jobs = models.ManyToManyField(Job)

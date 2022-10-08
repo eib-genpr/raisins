@@ -43,8 +43,7 @@ const JobBoard: React.FC = (props: any) => {
       pipeline
       candidateSet {
         id
-        name
-        surname
+        fullname
         steps {
           id
           step

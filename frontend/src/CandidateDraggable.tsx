@@ -23,8 +23,8 @@ function CandidateDraggable(props) {
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          <Avatar userId={props.candidate.id} size={2} text={`${props.candidate.content.name[0]}${props.candidate.content.surname[0]}`}></Avatar>
-          {props.candidate.content.name} {props.candidate.content.surname}
+          <Avatar userId={props.candidate.id} size={2} text={`${props.candidate.content.fullname.split(' ')[0][0]}${props.candidate.content.fullname.split(' ')[1][0]}`}></Avatar>
+          {props.candidate.content.fullname}
         </Container>
       )}
     </Draggable>

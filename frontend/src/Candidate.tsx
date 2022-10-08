@@ -14,9 +14,7 @@ const Candidate: React.FC = (props: any) => {
   const { loading, error, data } = useQuery(gql`query getCandidate($candidateId: ID!) {
     candidateById(id: $candidateId) {
       id
-      name
-      surname
-      middlename
+      fullname
       email
       phone
       jobs {
