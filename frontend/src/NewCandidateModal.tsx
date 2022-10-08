@@ -61,8 +61,16 @@ function NewCandidateModal(props: any) {
     fileList: [],
   };
 
-  const onFinish = () => {
-
+  const onFinish = async (values) => {
+    const response = await fetch(process.env.REACT_APP_API_URL + '/candidates/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
+    });
+    if (response.status === 201)
+      message.success('Candidate created successfully');
+    else
+      message.error('Failed to create the candidate');
   };
 
   const onFinishFailed = () => {
@@ -94,6 +102,7 @@ function NewCandidateModal(props: any) {
     >
       <Form
         name="basic"
+        form={form}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -111,7 +120,7 @@ function NewCandidateModal(props: any) {
           <div>
             <UserOutlined style={{marginTop: '8px', marginRight: '4px' }} />
             <Form.Item
-              name="Full name"
+              name="fullname"
               rules={[{ required: true, message: 'Please enter the full name' }]}
               style={{ display: 'inline-block', width: '90%' }}
             >
@@ -122,7 +131,7 @@ function NewCandidateModal(props: any) {
           <div>
             <MailOutlined style={{ marginTop: '8px', marginRight: '4px' }}/>
             <Form.Item
-              name="Email"
+              name="email"
               rules={[{ required: false }]}
               style={{ display: 'inline-block', width: '90%' }}
             >
@@ -133,7 +142,7 @@ function NewCandidateModal(props: any) {
           <div>
             <PhoneOutlined style={{ marginTop: '8px', marginRight: '4px' }}/>
             <Form.Item
-              name="Phone"
+              name="phone"
               rules={[{ required: false }]}
               style={{ display: 'inline-block', width: '90%' }}
             >

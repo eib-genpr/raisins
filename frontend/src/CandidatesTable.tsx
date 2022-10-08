@@ -58,7 +58,7 @@ function CandidatesTable() {
       title: 'Jobs',
       key: 'jobs',
       render: e => {
-        return <>{e.jobs[0].title}</> 
+        return <>{e?.jobs?.[0]?.title}</> 
       }
     },
     {
