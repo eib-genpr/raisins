@@ -18,7 +18,7 @@ function Layout(props: any) {
   const [newCandidateModalOpen, setNewCandidateModalOpen] = useState(false);
   const [newJobModalOpen, setNewJobModalOpen] = useState(false);
 
-  const { loading, error, data } = useQuery(gql`{ allJobs { id, title, department {
+  const { loading, error, data, refetch } = useQuery(gql`{ allJobs { id, title, department {
     id,
     name
   }, tags {
@@ -34,6 +34,7 @@ function Layout(props: any) {
       navigate('/jobs');
     else if (key === '/candidates')
       navigate('/candidates')
+    refetch();
   };
 
   const newMenu = (
@@ -62,8 +63,8 @@ function Layout(props: any) {
   );
 
   return (<>
-    <NewCandidateModal open={newCandidateModalOpen} setOpen={setNewCandidateModalOpen} jobs={data?.allJobs} />
-    <NewJobModal open={newJobModalOpen} setOpen={setNewJobModalOpen} departments={[...new Set(data?.allJobs.map((j) => j.department))]} />
+    <NewCandidateModal open={newCandidateModalOpen} setOpen={setNewCandidateModalOpen} jobs={data?.allJobs} refetch={refetch} />
+    <NewJobModal open={newJobModalOpen} setOpen={setNewJobModalOpen} departments={[...new Set(data?.allJobs.map((j) => j.department))]} jobs={data?.allJobs} refetch={refetch} />
     <AntLayout style={{height: '100vh'}}>
       <Sider trigger={null} collapsed={true} style={{ height: '100vh' }}>
         <div className="logo">

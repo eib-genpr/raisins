@@ -61,14 +61,15 @@ function NewCandidateModal(props: any) {
   };
 
   const onFinish = async (values) => {
-    const response = await fetch(process.env.REACT_APP_API_URL + '/candidates/', {
+    let response = await fetch(process.env.REACT_APP_API_URL + '/candidates/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values),
     });
-    if (response.status === 201)
+    if (response.status === 201) {
+      props.refetch();
       message.success('Candidate created successfully');
-    else
+    } else
       message.error('Failed to create the candidate');
   };
 
@@ -78,10 +79,6 @@ function NewCandidateModal(props: any) {
 
   const onJobChange = (value: string) => {
     setChosenJob(value);
-  };
-
-  const onStepChange = () => {
-
   };
 
   return (
@@ -176,11 +173,10 @@ function NewCandidateModal(props: any) {
               <Select
                 placeholder="Stage"
                 disabled={!!!chosenJob?.length}
-                onChange={onStepChange}
                 allowClear
               >
-                {steps?.map((s) => (
-                  <Select.Option value={s}>{s}</Select.Option>
+                {steps?.map((s, i) => (
+                  <Select.Option value={i}>{s}</Select.Option>
                 ))}
               </Select>
             </Form.Item>

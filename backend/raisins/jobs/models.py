@@ -52,7 +52,7 @@ class Job(models.Model):
     department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.SET_NULL)
     recruiter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='recruiter', null=True, blank=True)
     hiring_manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='hiring_manager', null=True, blank=True)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
     description = models.CharField(max_length=20000, null=True, blank=True)
     requirements = models.CharField(max_length=20000, null=True, blank=True)
     country = CountryField(null=True, blank=True)
