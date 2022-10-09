@@ -9,6 +9,7 @@ import {
   Filler,
   Legend,
 } from 'chart.js';
+import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useQuery, gql } from '@apollo/client';
 
@@ -37,26 +38,11 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      fill: true,
-      label: 'Candidates',
-      data: labels.map(() => 50),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
-
 function Dashboard() {
   const { loading, error, data: gqlData, refetch } = useQuery(gql`{
     allCandidates {
-        id
-        fullname
+      id
+      fullname
       email
       phone
       jobs {
@@ -79,9 +65,49 @@ function Dashboard() {
     }
   }`);
 
+  const [data, setData] = useState<any>(null);
+  const labels: string[] = [];
+  useEffect(() => {
+
+
+    labels.push(new Date().toISOString().split('T')[0]);
+    for (let i = 15; i != 0; i--) {
+      const date = new Date();
+      date.setDate(new Date().getDate() - i);
+      labels.push(date.toISOString().split('T')[0]);
+    }
+    labels.sort();
+if(gqlData)
+      setData({
+        labels,
+        datasets: [
+          {
+            fill: true,
+            label: 'Candidates',
+            data: labels.map((d) => {
+              let res = 0;
+              for (let c of gqlData.allCandidates)
+                if (new Date(Date.parse(c.createdAt)).toISOString().split('T')[0] == d)
+                  res++;
+              return res;
+              }),
+              borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          },
+        ],
+      });
+
+
+  }, [gqlData]);
+
+
+
   return (
     <div style={{ height: '500px' }}>
+      {data ?
       <Line options={options} data={data} />
+      : <></>
+      }
     </div>
   );
 }
