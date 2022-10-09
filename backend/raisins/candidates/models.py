@@ -13,6 +13,8 @@ class Candidate(models.Model):
     timezone = models.CharField(max_length=16, null=True, blank=True)
     resume_filename = models.CharField(max_length=512, null=True, blank=True)
     cover_letter = models.CharField(max_length=20000, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class CandidateJobStep(models.Model):

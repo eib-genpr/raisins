@@ -35,7 +35,7 @@ function Jobs() {
     id
   }, tags {
     id
-  }, description, requirements, country, city, street, zipCode, remote, employmentType, category, education, experience, minHours, maxHours, minSalary, maxSalary, resume, coverLetter, photo, phone, pipeline, candidateSet {
+  }, description, requirements, address, location, resume, coverLetter, phone, pipeline, candidateSet {
     id,
   }
   } }`);

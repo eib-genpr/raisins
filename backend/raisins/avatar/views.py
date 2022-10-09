@@ -2,12 +2,12 @@ import uuid
 import os.path
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from rest_framework.parsers import FileUploadParser
+from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-class ResumeFileUploadView(APIView):
-    parser_classes = (FileUploadParser,)
+class AvatarFileUploadView(APIView):
+    parser_classes = (MultiPartParser,FileUploadParser,)
 
     def put(self, request, filename, format=None):
         file_obj = request.data['file']

@@ -1,5 +1,5 @@
 import { Modal, Form, Input, Select, Avatar, Button, Upload, message } from 'antd';
-import { PhoneOutlined, MailOutlined, UserOutlined, ShoppingOutlined, CloseOutlined } from '@ant-design/icons';
+import { PhoneOutlined, MailOutlined, UserOutlined, ShoppingOutlined, CloseOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
@@ -12,8 +12,8 @@ import React, { useRef } from 'react';
 const AvatarStyled = styled.div`
 *:hover {
   background-color: green;
-  pointer: cursor;
 }
+pointer: cursor;
 margin-bottom: 8px;
 `;
 
@@ -22,8 +22,8 @@ function NewCandidateModal(props: any) {
   const [steps, setSteps] = useState([]);
   const [chosenJob, setChosenJob] = useState('');
   const [uploading, setUploading] = useState(false);
-  const [fileUploaded, setFileUploaded] = useState(false);
   const [resumeFilename, setResumeFilename] = useState(null);
+  const [avatarFilename, setAvatarFilename] = useState(null);
   const [tags, setTags] = useState<string[]>([]);
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -31,6 +31,22 @@ function NewCandidateModal(props: any) {
   const [editInputValue, setEditInputValue] = useState('');
   const inputRef = useRef<InputRef>(null);
   const editInputRef = useRef<InputRef>(null);
+  const [skills, setSkills] = useState<string[]>([]);
+  const [skillsInputVisible, setSkillsInputVisible] = useState(false);
+  const [skillsInputValue, setSkillsInputValue] = useState('');
+  const [editSkillsInputIndex, setSkillsEditInputIndex] = useState(-1);
+  const [editSkillsInputValue, setSkillsEditInputValue] = useState('');
+  const skillsInputRef = useRef<InputRef>(null);
+  const editSkillsInputRef = useRef<InputRef>(null);
+  const [languages, setLanguages] = useState<string[]>([]);
+  const [languagesInputVisible, setLanguagesInputVisible] = useState(false);
+  const [languagesInputValue, setLanguagesInputValue] = useState('');
+  const [editLanguagesInputIndex, setLanguagesEditInputIndex] = useState(-1);
+  const [editLanguagesInputValue, setLanguagesEditInputValue] = useState('');
+  const languagesInputRef = useRef<InputRef>(null);
+  const editLanguagesInputRef = useRef<InputRef>(null);
+
+
 
   useEffect(() => {
     if (inputVisible) {
@@ -44,7 +60,6 @@ function NewCandidateModal(props: any) {
 
   const handleClose = (removedTag: string) => {
     const newTags = tags.filter(tag => tag !== removedTag);
-    console.log(newTags);
     setTags(newTags);
   };
 
@@ -77,6 +92,95 @@ function NewCandidateModal(props: any) {
   };
 
   useEffect(() => {
+    if (skillsInputVisible) {
+      skillsInputRef.current?.focus();
+    }
+  }, [skillsInputVisible]);
+
+  useEffect(() => {
+    editSkillsInputRef.current?.focus();
+  }, [skillsInputValue]);
+
+  const handleSkillsClose = (removedTag: string) => {
+    const newSkills = skills.filter(tag => tag !== removedTag);
+    setSkills(newSkills);
+  };
+
+  const showSkillsInput = () => {
+    setSkillsInputVisible(true);
+  };
+
+  const handleSkillsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSkillsInputValue(e.target.value);
+  };
+
+  const handleSkillsInputConfirm = () => {
+    if (skillsInputValue && skills.indexOf(skillsInputValue) === -1) {
+      setSkills([...skills, skillsInputValue]);
+    }
+    setSkillsInputVisible(false);
+    setSkillsInputValue('');
+  };
+
+  const handleSkillsEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSkillsEditInputValue(e.target.value);
+  };
+
+  const handleSkillsEditInputConfirm = () => {
+    const newSkills = [...skills];
+    newSkills[editSkillsInputIndex] = editSkillsInputValue;
+    setSkills(newSkills);
+    setSkillsEditInputIndex(-1);
+    setSkillsInputValue('');
+  };
+
+
+  useEffect(() => {
+    if (languagesInputVisible) {
+      languagesInputRef.current?.focus();
+    }
+  }, [languagesInputVisible]);
+
+  useEffect(() => {
+    editLanguagesInputRef.current?.focus();
+  }, [languagesInputValue]);
+
+  const handleLanguagesClose = (removedTag: string) => {
+    const newLanguages = languages.filter(tag => tag !== removedTag);
+    setLanguages(newLanguages);
+  };
+
+  const showLanguagesInput = () => {
+    setLanguagesInputVisible(true);
+  };
+
+  const handleLanguagesInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLanguagesInputValue(e.target.value);
+  };
+
+  const handleLanguagesInputConfirm = () => {
+    if (languagesInputValue && languages.indexOf(languagesInputValue) === -1) {
+      setLanguages([...languages, languagesInputValue]);
+    }
+    setLanguagesInputVisible(false);
+    setLanguagesInputValue('');
+  };
+
+  const handleLanguagesEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLanguagesEditInputValue(e.target.value);
+  };
+
+  const handleLanguagesEditInputConfirm = () => {
+    const newLanguages = [...languages];
+    newLanguages[editLanguagesInputIndex] = editLanguagesInputValue;
+    setLanguages(newLanguages);
+    setLanguagesEditInputIndex(-1);
+    setLanguagesInputValue('');
+  };
+
+
+
+  useEffect(() => {
     if (chosenJob?.length)
       setSteps(JSON.parse(props.jobs.filter((j) => j.id === chosenJob)[0].pipeline));
   }, [chosenJob]);
@@ -97,7 +201,6 @@ function NewCandidateModal(props: any) {
     .then((r) => {
       setResumeFilename(r.filename);
       message.success('Uploaded successfully');
-      setFileUploaded(true);
     })
     .catch((e) => {
       message.error('Upload failed');
@@ -106,6 +209,28 @@ function NewCandidateModal(props: any) {
       setUploading(false);
     });
   };
+
+  const handleAvatarUpload = (file) => {
+    const formData = new FormData();
+    formData.append('file', file as RcFile);
+    if (['jpg', 'jpeg', 'png'].includes(file.name.split('.').pop().toLowerCase()) === false) {
+      message.error('Only JPEG and PNG files are allowed');
+      return;
+    }
+    fetch(process.env.REACT_APP_API_URL + '/avatar/' + file.name, {
+      method: 'PUT',
+      body: formData,
+    })
+    .then(res => res.json())
+    .then((r) => {
+      setAvatarFilename(r.filename);
+      message.success('Uploaded successfully');
+    })
+    .catch((e) => {
+      message.error('Upload failed');
+    })
+  };
+
 
   const uploadProps: UploadProps = {
     onRemove: file => {
@@ -116,6 +241,17 @@ function NewCandidateModal(props: any) {
     },
     fileList: [],
   };
+
+  const avatarUploadProps: UploadProps = {
+    onRemove: file => {
+    },
+    beforeUpload: file => {
+      handleAvatarUpload(file);
+      return false;
+    },
+    fileList: [],
+  };
+
 
   const onFinish = async (values) => {
     let response = await fetch(process.env.REACT_APP_API_URL + '/candidates/', {
@@ -163,9 +299,14 @@ function NewCandidateModal(props: any) {
       >
         <div style={{ display: 'grid', gridTemplateColumns: '20% 40% 40%', gap: '10px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gridRow: '1/3' }}>
+            <Upload {...avatarUploadProps}>
             <AvatarStyled>
-              <Avatar size={64} icon={<UserOutlined />} style={{  }} />
+              {avatarFilename ?
+                <Avatar size={64} src={process.env.REACT_APP_STATIC_URL + '/' + avatarFilename} style={{ cursor: 'pointer' }} />
+              :
+              <Avatar size={64} icon={<UserOutlined />} style={{ cursor: 'pointer' }} />}
             </AvatarStyled>
+            </Upload>
             <Upload {...uploadProps}><Button loading={uploading} type='primary' icon={<UploadOutlined />}>Upload CV</Button></Upload>
             {resumeFilename && (<>
               <span style={{ color: 'darkgreen' }}>CV is attached <CloseOutlined onClick={() => setResumeFilename(null)}/></span>
@@ -243,8 +384,49 @@ function NewCandidateModal(props: any) {
 
           </div>
 
-          <div>
 
+        </div>
+
+          
+
+        <div style={{ marginTop: '10px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '50% 25% 25%', gap: '10px' }}>
+            <div>
+              <EnvironmentOutlined style={{ marginTop: '8px', marginRight: '4px' }}/>
+              <Form.Item
+                name="address"
+                rules={[{ required: false }]}
+                style={{ display: 'inline-block', width: '95%' }}
+              >
+                <Input placeholder="Address" />
+              </Form.Item>
+            </div>
+            <div>
+            <EnvironmentOutlined style={{ marginTop: '8px', marginRight: '4px' }}/>
+            <Form.Item
+              name="timezone"
+              rules={[{ required: false }]}
+              style={{ display: 'inline-block', width: '90%' }}
+            >
+              <Input placeholder="Timezone" />
+            </Form.Item>
+            </div>
+            <div>
+              <EnvironmentOutlined style={{ marginTop: '8px', marginRight: '4px' }}/>
+              <Form.Item
+                name="salaryExpectation"
+                rules={[{ required: false }]}
+                style={{ display: 'inline-block', width: '90%' }}
+              >
+                <Input placeholder="Salary expectation" />
+              </Form.Item>
+
+          </div>
+        </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '33% 33% 33%', gap: '10px' }}>
+          <div>
             <div style={{ width: '100%' }}>            {inputVisible && (
               <Input
                 ref={inputRef}
@@ -258,12 +440,12 @@ function NewCandidateModal(props: any) {
                 onPressEnter={handleInputConfirm}
               />
             )}
-            {!inputVisible && (
-              <Tag className="site-tag-plus" onClick={showInput} style={{ width: '100%' }}>
-                <PlusOutlined /> New Tag
-              </Tag>
-            )}
-</div>
+              {!inputVisible && (
+                <Tag className="site-tag-plus" onClick={showInput} style={{ width: '100%' }}>
+                  <PlusOutlined /> New Tag
+                </Tag>
+              )}
+            </div>
 
             {tags.map((tag, index) => {
               if (editInputIndex === index) {
@@ -313,9 +495,152 @@ function NewCandidateModal(props: any) {
             })}
           </div>
 
+          <div>
+            <div style={{ width: '100%' }}>            {skillsInputVisible && (
+              <Input
+                ref={skillsInputRef}
+                type="text"
+                size="small"
+                style={{ width: '100%' }}
+                className="tag-input"
+                value={skillsInputValue}
+                onChange={handleSkillsInputChange}
+                onBlur={handleSkillsInputConfirm}
+                onPressEnter={handleSkillsInputConfirm}
+              />
+            )}
+              {!skillsInputVisible && (
+                <Tag className="site-tag-plus" onClick={showSkillsInput} style={{ width: '100%' }}>
+                  <PlusOutlined /> New Skill
+                </Tag>
+              )}
+            </div>
+
+            {skills.map((tag, index) => {
+              if (editSkillsInputIndex === index) {
+                return (
+                  <Input
+                    ref={editSkillsInputRef}
+                    key={tag}
+                    size="small"
+                    className="tag-input"
+                    value={editSkillsInputValue}
+                    onChange={handleSkillsEditInputChange}
+                    onBlur={handleSkillsEditInputConfirm}
+                    onPressEnter={handleSkillsEditInputConfirm}
+                  />
+                );
+              }
+
+              const isLongTag = tag.length > 20;
+
+              const tagElem = (
+                <Tag
+                  className="edit-tag"
+                  key={tag}
+                  closable={true}
+                  onClose={() => handleSkillsClose(tag)}
+                >
+                  <span
+                    onDoubleClick={e => {
+                      if (index !== 0) {
+                        setSkillsEditInputIndex(index);
+                        setSkillsEditInputValue(tag);
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+                  </span>
+                </Tag>
+              );
+              return isLongTag ? (
+                <Tooltip title={tag} key={tag}>
+                  {tagElem}
+                </Tooltip>
+              ) : (
+              tagElem
+              );
+            })}
+          </div>
+
+          <div>
+            <div style={{ width: '100%' }}>            {languagesInputVisible && (
+              <Input
+                ref={languagesInputRef}
+                type="text"
+                size="small"
+                style={{ width: '100%' }}
+                className="tag-input"
+                value={languagesInputValue}
+                onChange={handleLanguagesInputChange}
+                onBlur={handleLanguagesInputConfirm}
+                onPressEnter={handleLanguagesInputConfirm}
+              />
+            )}
+              {!languagesInputVisible && (
+                <Tag className="site-tag-plus" onClick={showLanguagesInput} style={{ width: '100%' }}>
+                  <PlusOutlined /> New Language
+                </Tag>
+              )}
+            </div>
+
+            {languages.map((tag, index) => {
+              if (editLanguagesInputIndex === index) {
+                return (
+                  <Input
+                    ref={editLanguagesInputRef}
+                    key={tag}
+                    size="small"
+                    className="tag-input"
+                    value={editLanguagesInputValue}
+                    onChange={handleLanguagesEditInputChange}
+                    onBlur={handleLanguagesEditInputConfirm}
+                    onPressEnter={handleLanguagesEditInputConfirm}
+                  />
+                );
+              }
+
+              const isLongTag = tag.length > 20;
+
+              const tagElem = (
+                <Tag
+                  className="edit-tag"
+                  key={tag}
+                  closable={true}
+                  onClose={() => handleLanguagesClose(tag)}
+                >
+                  <span
+                    onDoubleClick={e => {
+                      if (index !== 0) {
+                        setLanguagesEditInputIndex(index);
+                        setLanguagesEditInputValue(tag);
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+                  </span>
+                </Tag>
+              );
+              return isLongTag ? (
+                <Tooltip title={tag} key={tag}>
+                  {tagElem}
+                </Tooltip>
+              ) : (
+              tagElem
+              );
+            })}
+          </div>
 
 
-        </div>
+
+          </div>
+
+
+
+
+
       </Form>
     </Modal>
   )

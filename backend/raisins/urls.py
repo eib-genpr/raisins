@@ -4,7 +4,8 @@ from rest_framework import routers
 from raisins.auth import views
 from raisins.candidates.views import CandidateJobStepViewSet, CandidateViewSet
 from raisins.jobs.views import JobViewSet
-from raisins.resume.views import FileUploadView
+from raisins.resume.views import ResumeFileUploadView
+from raisins.avatar.views import AvatarFileUploadView
 from django.views.decorators.csrf import csrf_exempt
 from graphene_django.views import GraphQLView
 
@@ -22,5 +23,6 @@ urlpatterns = [
     re_path(r'^auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.jwt')),
     path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True))),
-    re_path(r'^resume/(?P<filename>[^/]+)$', FileUploadView.as_view()),
+    re_path(r'^resume/(?P<filename>[^/]+)$', ResumeFileUploadView.as_view()),
+    re_path(r'^avatar/(?P<filename>[^/]+)$', AvatarFileUploadView.as_view()),
 ]

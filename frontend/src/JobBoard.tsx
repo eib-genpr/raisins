@@ -5,6 +5,8 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { useQuery, gql } from '@apollo/client';
 import Step from './Step';
 import randomcolor from 'randomcolor';
+import { Button, Tooltip } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 
 const Container = styled.div`
 display: flex;
@@ -12,6 +14,15 @@ margin-left: auto;
 margin-right: auto;
 width: 100%;
 `;
+
+const Header = styled.div`
+position: relative;
+width: 100%;
+height: 40px;
+background-color: lightgrey;
+display: flex;
+align-items: center;
+`
 
 const JobBoard: React.FC = (props: any) => {
   const { id } = useParams();
@@ -27,23 +38,10 @@ const JobBoard: React.FC = (props: any) => {
       }
       description
       requirements
-      country
-      city
-      street
-      zipCode
-      remote
-      employmentType
-      category
-      education
-      experience
-      minHours
-      maxHours
-      minSalary
-      maxSalary
+      address
+      location
       resume
       coverLetter
-      photo
-      phone
       pipeline
       candidateSet {
         id
@@ -159,6 +157,15 @@ const JobBoard: React.FC = (props: any) => {
   };
 
   return (
+    <>
+      <Header>
+        <div style={{ color: 'black', fontWeight: '900', fontSize: '18px', marginLeft: '10px' }}>
+          {data?.jobById.title}
+          <Tooltip title="Edit">
+          <Button icon={<EditOutlined />} shape="circle" style={{ marginLeft: '20px' }} onClick={() => {}} />
+            </Tooltip>
+        </div>
+      </Header>
     <Container>
       <DragDropContext onDragEnd={onDragEnd}>
         {state.stepOrder?.map(cid => {
@@ -168,6 +175,7 @@ const JobBoard: React.FC = (props: any) => {
         })}
       </DragDropContext>
     </Container>
+    </>
   );
 };
 

@@ -42,7 +42,7 @@ function JobsTable() {
     id, name
   }, tags {
     id
-  }, description, requirements, country, city, street, zipCode, remote, employmentType, category, education, experience, minHours, maxHours, minSalary, maxSalary, resume, coverLetter, photo, phone, pipeline, updatedAt, createdAt, candidateSet {
+  }, description, requirements, address, location, resume, coverLetter, phone, pipeline, updatedAt, createdAt, candidateSet {
     id,
   }
   } }`);
