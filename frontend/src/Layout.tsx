@@ -29,37 +29,12 @@ function Layout(props: any) {
   }
   } }`);
 
-  const newMenu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: (
-            <a target="_blank" rel="noopener noreferrer" onClick={() => setNewCandidateModalOpen(true)}>
-              Candidate
-            </a>
-          ),
-          icon: <UserOutlined />
-        },
-        {
-          key: '2',
-          label: (
-            <a target="_blank" rel="noopener noreferrer" onClick={() => setNewJobModalOpen(true)}>
-              Job
-            </a>
-          ),
-          icon: <ShoppingOutlined />
-        },
-      ]}
-    />
-  );
-
   return (
     <>
       <NewCandidateModal open={newCandidateModalOpen} setOpen={setNewCandidateModalOpen} jobs={data?.allJobs} refetch={refetch} />
       <NewJobModal open={newJobModalOpen} setOpen={setNewJobModalOpen} departments={[...new Set(data?.allJobs.map((j) => j.department))]} jobs={data?.allJobs} refetch={refetch} />
       {props.children}
-      <BottomBar />
+      <BottomBar setNewCandidateModalOpen={setNewCandidateModalOpen} setNewJobModalOpen={setNewJobModalOpen} />
     </>
   );
 }

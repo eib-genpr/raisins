@@ -26,14 +26,14 @@ flex-grow: 1;
 min-height: 100px;
 `;
 
-class InnerList extends React.Component<{ candidates: any }> {
+class InnerList extends React.Component<{ candidates: any, color: any }> {
   shouldComponentUpdate(nextProps: any) {
     if (nextProps === this.props.candidates) return false;
     return true;
   }
   render() {
     return this.props.candidates.map((t: any, i: number) => (
-      <CandidateDraggable key={t.id} candidate={t} index={i} />
+      <CandidateDraggable key={t.id} candidate={t} index={i} color={ this.props.color }/>
     ));
   }
 }
@@ -65,7 +65,7 @@ function Step(props: any) {
             isDraggingOver={snapshot.isDraggingOver}
             themeColor={props.themeColor}
           >
-            <InnerList candidates={props.candidates} />
+            <InnerList candidates={props.candidates} color={props.themeColor} />
             {provided.placeholder}
           </CandidateList>
         )}

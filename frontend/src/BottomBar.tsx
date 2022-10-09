@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { Button, Tooltip } from 'antd';
-import { ShoppingOutlined, UserOutlined, HomeOutlined } from '@ant-design/icons';
+import { Button, Tooltip, Dropdown, Menu } from 'antd';
+import { ShoppingOutlined, UserOutlined, HomeOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 
 const Bar = styled.div`
 position: fixed;
@@ -24,6 +24,26 @@ z-index: 2;
 
 function BottomBar(props: any) {
   const navigate = useNavigate();
+  const newMenu = (
+    <Menu items={[
+      {
+        key: 'candidate',
+        label: (
+          <a target="_blank" rel="noopener noreferrer" onClick={() => props.setNewCandidateModalOpen(true)}>
+            Candidate
+          </a>
+        ),
+      },
+      {
+        key: 'job',
+        label: (
+          <a target="_blank" rel="noopener noreferrer" onClick={() => props.setNewJobModalOpen(true)}>
+            Job
+          </a>
+        ),
+      },
+    ]}/>
+  );
 
   return (
     <Bar>
@@ -38,6 +58,14 @@ function BottomBar(props: any) {
       <Tooltip title="Candidates">
         <Button icon={<UserOutlined />} shape="circle" onClick={() => navigate('/candidates')} />
       </Tooltip>
+      &nbsp;
+      <Tooltip title="Edit">
+        <Button icon={<EditOutlined />} shape="circle" onClick={() => {}} />
+      </Tooltip>
+      &nbsp;
+      <Dropdown placement="top" overlay={newMenu}>
+        <Button icon={<PlusOutlined />} shape="circle" />
+      </Dropdown>
     </Bar>
   );
 }
