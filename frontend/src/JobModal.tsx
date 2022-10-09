@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-function NewJobModal(props: any) {
+function JobModal(props: any) {
   const [form] = Form.useForm();
   const [description, setDescription] = useState('Description');
   const [requirements, setRequirements] = useState('Requirements');
@@ -85,7 +85,7 @@ function NewJobModal(props: any) {
 
   return (
     <Modal
-      title="New job"
+      title={props?.values ? "Edit job" : "New job"}
       centered
       open={props.open}
       onOk={() => {
@@ -99,9 +99,9 @@ function NewJobModal(props: any) {
       width={1000}
     >
       <Form
+        initialValues={props?.values}
         name="basic"
         form={form}
-        initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -255,4 +255,4 @@ function NewJobModal(props: any) {
   )
 }
 
-export default NewJobModal;
+export default JobModal;

@@ -37,7 +37,7 @@ function BottomBar(props: any) {
       {
         key: 'job',
         label: (
-          <a target="_blank" rel="noopener noreferrer" onClick={() => props.setNewJobModalOpen(true)}>
+          <a target="_blank" rel="noopener noreferrer" onClick={() => props.setJobModalOpen(true)}>
             Job
           </a>
         ),

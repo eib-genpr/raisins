@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import NewCandidateModal from './NewCandidateModal';
-import NewJobModal from './NewJobModal';
+import JobModal from './JobModal';
 import BottomBar from './BottomBar';
 import { useQuery, gql } from '@apollo/client';
 
 function Layout(props: any) {
   const [newCandidateModalOpen, setNewCandidateModalOpen] = useState(false);
-  const [newJobModalOpen, setNewJobModalOpen] = useState(false);
+  const [newJobModalOpen, setJobModalOpen] = useState(false);
   const [users, setUsers] = useState([]);
 
   const { loading, error, data, refetch } = useQuery(gql`{ allJobs { id, title, department {
@@ -34,9 +34,9 @@ function Layout(props: any) {
   return (
     <>
       <NewCandidateModal open={newCandidateModalOpen} setOpen={setNewCandidateModalOpen} jobs={data?.allJobs} refetch={refetch} />
-      <NewJobModal open={newJobModalOpen} setOpen={setNewJobModalOpen} departments={[...new Set(data?.allJobs.map((j) => j.department))]} jobs={data?.allJobs} users={users} refetch={refetch} />
+      <JobModal open={newJobModalOpen} setOpen={setJobModalOpen} departments={[...new Set(data?.allJobs.map((j) => j.department))]} jobs={data?.allJobs} users={users} refetch={refetch} />
       {props.children}
-      <BottomBar setNewCandidateModalOpen={setNewCandidateModalOpen} setNewJobModalOpen={setNewJobModalOpen} />
+      <BottomBar setNewCandidateModalOpen={setNewCandidateModalOpen} setJobModalOpen={setJobModalOpen} />
     </>
   );
 }

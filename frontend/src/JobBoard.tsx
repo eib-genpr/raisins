@@ -7,6 +7,7 @@ import Step from './Step';
 import randomcolor from 'randomcolor';
 import { Button, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
+import JobModal from './JobModal';
 
 const Container = styled.div`
 display: flex;
@@ -26,6 +27,7 @@ align-items: center;
 
 const JobBoard: React.FC = (props: any) => {
   const { id } = useParams();
+  const [jobModalOpen, setJobModalOpen] = useState(false);
   const { loading, error, data } = useQuery(gql`query getJob($jobId: ID!) {
     jobById(id: $jobId) {
       id
@@ -158,11 +160,12 @@ const JobBoard: React.FC = (props: any) => {
 
   return (
     <>
+      <JobModal open={jobModalOpen} setOpen={setJobModalOpen} values={{title: data?.jobById.title}} />
       <Header>
         <div style={{ color: 'black', fontWeight: '900', fontSize: '18px', marginLeft: '10px' }}>
           {data?.jobById.title}
           <Tooltip title="Edit">
-          <Button icon={<EditOutlined />} shape="circle" style={{ marginLeft: '20px' }} onClick={() => {}} />
+          <Button icon={<EditOutlined />} shape="circle" style={{ marginLeft: '20px' }} onClick={() => setJobModalOpen(!jobModalOpen) } />
             </Tooltip>
         </div>
       </Header>
