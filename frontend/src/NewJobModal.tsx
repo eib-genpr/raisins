@@ -1,6 +1,7 @@
 import { Modal, Form, Input, Select, InputRef, Tag, Tooltip, Radio, message } from 'antd';
 import { PlusOutlined, FunnelPlotOutlined } from '@ant-design/icons';
 import { useState, useRef, useEffect } from 'react';
+import { countries } from 'countries-list';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -17,6 +18,11 @@ function NewJobModal(props: any) {
   const [remoteness, setRemoteness] = useState('onsite');
   const stageInputRef = useRef<InputRef>(null);
   const stageEditInputRef = useRef<InputRef>(null);
+
+  const employmentTypes = ['Full time', 'Part time', 'Temporary', 'Contract', 'Internship', 'Seasonal', 'Volunteeer'];
+  const categories = ['Accounting', 'Administration and Clerical']
+  const education = ['High school coursework', 'High school or equivalent'];
+  const experience = ['Student (High school)', 'Student (College)'];
 
   useEffect(() => {
     if (stageInputVisible) {
@@ -221,12 +227,12 @@ function NewJobModal(props: any) {
 
         <hr style={{ marginTop: '75px', marginBottom: '25px' }}/>
         <div style={{ display: 'grid', gridTemplateColumns: '50% 50%', gap: '10px' }}>
-          <Select placeholder="Recruiter">
+          <Select placeholder="Recruiter" allowClear>
             {props?.users?.map((u) => (
               <Select.Option value={u.id}>{u.username}</Select.Option>
             ))}
           </Select>
-          <Select placeholder="Hiring manager">
+          <Select placeholder="Hiring manager" allowClear>
             {props?.users?.map((u) => (
               <Select.Option value={u.id}>{u.username}</Select.Option>
             ))}
@@ -242,6 +248,47 @@ function NewJobModal(props: any) {
             <Radio value={'hybrid'}>Hybrid</Radio>
             <Radio value={'remote'}>Remote</Radio>
           </Radio.Group>
+
+          <Select placeholder="Country" allowClear>
+            {Object.keys(countries).map((k) => (
+              <Select.Option value={k}>{countries[k].name}</Select.Option>
+            ))}
+          </Select>
+
+          <Input placeholder="City"></Input>
+          <Input placeholder="Street"></Input>
+          <Input placeholder="State"></Input>
+          <Input placeholder="Zip code"></Input>
+        </div>
+
+
+        <hr style={{ marginTop: '25px', marginBottom: '25px' }}/>
+        <div style={{ display: 'grid', gridTemplateColumns: '33% 33% 33%', gap: '10px' }}>
+          <Select placeholder="Employement type" allowClear>
+            {employmentTypes.map((t) => (
+              <Select.Option value={t}>{t}</Select.Option>
+            ))}
+          </Select>
+
+          <Select placeholder="Category" allowClear>
+            {categories.map((t) => (
+              <Select.Option value={t}>{t}</Select.Option>
+            ))}
+          </Select>
+
+          <Select placeholder="Education" allowClear>
+            {education.map((t) => (
+              <Select.Option value={t}>{t}</Select.Option>
+            ))}
+          </Select>
+
+          <Select placeholder="Experience" allowClear>
+            {experience.map((t) => (
+              <Select.Option value={t}>{t}</Select.Option>
+            ))}
+          </Select>
+
+
         </div>
       </Form>
     </Modal>
