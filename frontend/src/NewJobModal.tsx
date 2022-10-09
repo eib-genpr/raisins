@@ -128,7 +128,7 @@ function NewJobModal(props: any) {
                 allowClear
               >
                 {props?.departments?.map((d) => (
-                  <Select.Option value={d.id}>{d.name}</Select.Option>
+                  <Select.Option value={d?.id}>{d?.name}</Select.Option>
                 ))}
               </Select>
             </Form.Item>
