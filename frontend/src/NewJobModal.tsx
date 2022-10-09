@@ -1,4 +1,4 @@
-import { Modal, Form, Input, Select, InputRef, Tag, Tooltip, message } from 'antd';
+import { Modal, Form, Input, Select, InputRef, Tag, Tooltip, Radio, message } from 'antd';
 import { PlusOutlined, FunnelPlotOutlined } from '@ant-design/icons';
 import { useState, useRef, useEffect } from 'react';
 import ReactQuill from 'react-quill';
@@ -14,6 +14,7 @@ function NewJobModal(props: any) {
   const [stageEditInputIndex, setStageEditInputIndex] = useState(-1);
   const [stageEditInputValue, setStageEditInputValue] = useState('');
   const [alwaysNull, _] = useState(null);
+  const [remoteness, setRemoteness] = useState('onsite');
   const stageInputRef = useRef<InputRef>(null);
   const stageEditInputRef = useRef<InputRef>(null);
 
@@ -158,7 +159,7 @@ function NewJobModal(props: any) {
                 <Tag
                   className="edit-tag"
                   key={stage}
-                  closable={index !== 0}
+                  closable={true}
                   onClose={() => handleClose(stage)}
                 >
                   <span
@@ -202,23 +203,46 @@ function NewJobModal(props: any) {
 
           </div>
 
-              <Select
-                placeholder="Copy pipeline from existing job"
-                value={alwaysNull}
-              onChange={onPipelineCopyChanged}
-              >
-                {props?.jobs?.map((j) => (
-                  <Select.Option value={j.id}>{j.title}</Select.Option>
-                ))}
-              </Select>
+          <Select
+            placeholder="Copy pipeline from existing job"
+            value={alwaysNull}
+            onChange={onPipelineCopyChanged}
+          >
+            {props?.jobs?.map((j) => (
+              <Select.Option value={j.id}>{j.title}</Select.Option>
+            ))}
+          </Select>
 
 
           <ReactQuill theme="snow" value={description} onChange={setDescription} />
           <ReactQuill theme="snow" value={requirements} onChange={setRequirements} />
 
+        </div>
+
+        <hr style={{ marginTop: '75px', marginBottom: '25px' }}/>
+        <div style={{ display: 'grid', gridTemplateColumns: '50% 50%', gap: '10px' }}>
+          <Select placeholder="Recruiter">
+            {props?.users?.map((u) => (
+              <Select.Option value={u.id}>{u.username}</Select.Option>
+            ))}
+          </Select>
+          <Select placeholder="Hiring manager">
+            {props?.users?.map((u) => (
+              <Select.Option value={u.id}>{u.username}</Select.Option>
+            ))}
+          </Select>
+
 
         </div>
 
+        <hr style={{ marginTop: '25px', marginBottom: '25px' }}/>
+        <div style={{ display: 'grid', gridTemplateColumns: '33% 33% 33%', gap: '10px' }}>
+          <Radio.Group value={remoteness} onChange={(e) => setRemoteness(e.target.value)}>
+            <Radio value={'onsite'}>On-site</Radio>
+            <Radio value={'hybrid'}>Hybrid</Radio>
+            <Radio value={'remote'}>Remote</Radio>
+          </Radio.Group>
+        </div>
       </Form>
     </Modal>
   )

@@ -34,7 +34,7 @@ const Login: React.FC = () => {
     else {
       localStorage.setItem('access', response.access);
       localStorage.setItem('refresh', response.refresh);
-      navigate('/job');
+      navigate('/jobs');
     }
   };
 
