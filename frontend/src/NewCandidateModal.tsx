@@ -1,5 +1,5 @@
 import { Modal, Form, Input, Select, Avatar, Button, Upload, message } from 'antd';
-import { PhoneOutlined, MailOutlined, UserOutlined, ShoppingOutlined,  EnvironmentOutlined } from '@ant-design/icons';
+import { PhoneOutlined, MailOutlined, UserOutlined, ShoppingOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
@@ -19,6 +19,7 @@ function NewCandidateModal(props: any) {
   const [chosenJob, setChosenJob] = useState('');
   const [uploading, setUploading] = useState(false);
   const [fileUploaded, setFileUploaded] = useState(false);
+  const [resumeFilename, setResumeFilename] = useState(null);
 
   useEffect(() => {
     if (chosenJob?.length)
@@ -39,6 +40,7 @@ function NewCandidateModal(props: any) {
     })
     .then(res => res.json())
     .then((r) => {
+      setResumeFilename(r.filename);
       message.success('Uploaded successfully');
       setFileUploaded(true);
     })
@@ -64,7 +66,7 @@ function NewCandidateModal(props: any) {
     let response = await fetch(process.env.REACT_APP_API_URL + '/candidates/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(values),
+      body: JSON.stringify({...values, resume_filename: resumeFilename}),
     });
     if (response.status === 201) {
       props.refetch();
@@ -110,7 +112,9 @@ function NewCandidateModal(props: any) {
               <Avatar size={64} icon={<UserOutlined />} style={{  }} />
             </AvatarStyled>
             <Upload {...uploadProps}><Button loading={uploading} type='primary' icon={<UploadOutlined />}>Upload CV</Button></Upload>
-            {fileUploaded && <span style={{ color: 'darkgreen' }}>CV is attached</span>}
+            {resumeFilename && (<>
+              <span style={{ color: 'darkgreen' }}>CV is attached <CloseOutlined onClick={() => setResumeFilename(null)}/></span>
+            </>)}
           </div>
 
           <div>

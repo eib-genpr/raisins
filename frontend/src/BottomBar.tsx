@@ -59,10 +59,6 @@ function BottomBar(props: any) {
         <Button icon={<UserOutlined />} shape="circle" onClick={() => navigate('/candidates')} />
       </Tooltip>
       &nbsp;
-      <Tooltip title="Edit">
-        <Button icon={<EditOutlined />} shape="circle" onClick={() => {}} />
-      </Tooltip>
-      &nbsp;
       <Dropdown placement="top" overlay={newMenu}>
         <Button icon={<PlusOutlined />} shape="circle" />
       </Dropdown>

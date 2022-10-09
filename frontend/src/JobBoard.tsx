@@ -8,6 +8,9 @@ import randomcolor from 'randomcolor';
 
 const Container = styled.div`
 display: flex;
+margin-left: auto;
+margin-right: auto;
+width: 100%;
 `;
 
 const JobBoard: React.FC = (props: any) => {

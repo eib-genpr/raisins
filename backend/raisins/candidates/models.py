@@ -11,8 +11,8 @@ class Candidate(models.Model):
     address = models.CharField(max_length=255, null=True, blank=True)
     salary_expectation = models.DecimalField(max_digits=32, decimal_places=2, null=True, blank=True)
     timezone = models.CharField(max_length=16, null=True, blank=True)
-    resume = models.BinaryField(null=True, blank=True)
-    cover_letter = models.BinaryField(null=True, blank=True)
+    resume_filename = models.CharField(max_length=512, null=True, blank=True)
+    cover_letter = models.CharField(max_length=20000, null=True, blank=True)
 
 
 class CandidateJobStep(models.Model):

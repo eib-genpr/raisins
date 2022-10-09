@@ -13,5 +13,5 @@ class FileUploadView(APIView):
         file_obj = request.data['file']
         extension = os.path.splitext(filename)[1]
         file_uuid = uuid.uuid4();
-        path = default_storage.save('resumes/' + str(file_uuid) + extension, ContentFile(file_obj.read()))
+        path = default_storage.save('media/' + str(file_uuid) + extension, ContentFile(file_obj.read()))
         return Response({ 'filename': str(file_uuid) + extension })

@@ -28,7 +28,7 @@ class CandidateJobStepType(DjangoObjectType):
 class CandidateType(DjangoObjectType):
     class Meta:
         model = Candidate
-        fields = ('id', 'fullname', 'email', 'phone', 'jobs', 'address', 'salary_expectation', 'timezone', 'steps')
+        fields = ('id', 'fullname', 'email', 'phone', 'jobs', 'address', 'salary_expectation', 'timezone', 'steps', 'resume_filename', 'cover_letter')
 
 
 class Query(graphene.ObjectType):

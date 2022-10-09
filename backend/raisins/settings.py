@@ -149,3 +149,5 @@ SIMPLE_JWT = {
 GRAPHENE = {
     'SCHEMA': 'raisins.schema.schema'
 }
+
+MEDIA_URL = 'media/'
