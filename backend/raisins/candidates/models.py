@@ -21,6 +21,5 @@ class CandidateJobStep(models.Model):
     step = models.PositiveSmallIntegerField(default=0)
 
 
-
 admin.site.register(Candidate)
 admin.site.register(CandidateJobStep)
